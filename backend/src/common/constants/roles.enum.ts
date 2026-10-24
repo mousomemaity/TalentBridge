@@ -1,0 +1,64 @@
+export enum UserRole {
+  CANDIDATE = 'CANDIDATE',
+  RECRUITER = 'RECRUITER',
+  HIRING_MANAGER = 'HIRING_MANAGER',
+  COMPANY_ADMIN = 'COMPANY_ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+}
+
+export enum UserStatus {
+  ACTIVE = 'ACTIVE',
+  PENDING_VERIFICATION = 'PENDING_VERIFICATION',
+  SUSPENDED = 'SUSPENDED',
+}
+
+export enum JobStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED',
+  PAUSED = 'PAUSED',
+  CLOSED = 'CLOSED',
+}
+
+export enum JobType {
+  FULL_TIME = 'FULL_TIME',
+  PART_TIME = 'PART_TIME',
+  CONTRACT = 'CONTRACT',
+  INTERNSHIP = 'INTERNSHIP',
+}
+
+export enum WorkplaceType {
+  ONSITE = 'ONSITE',
+  REMOTE = 'REMOTE',
+  HYBRID = 'HYBRID',
+}
+
+export enum StageKind {
+  APPLIED = 'APPLIED',
+  SCREEN = 'SCREEN',
+  INTERVIEW = 'INTERVIEW',
+  OFFER = 'OFFER',
+  HIRED = 'HIRED',
+  REJECTED = 'REJECTED',
+}
+
+export enum ApplicationStatus {
+  ACTIVE = 'ACTIVE',
+  ARCHIVED = 'ARCHIVED',
+  WITHDRAWN = 'WITHDRAWN',
+  HIRED = 'HIRED',
+  REJECTED = 'REJECTED',
+}
+
+export enum InterviewStatus {
+  SCHEDULED = 'SCHEDULED',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+  RESCHEDULE_REQUESTED = 'RESCHEDULE_REQUESTED',
+}
+
+export enum AssessmentStatus {
+  INVITED = 'INVITED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  SUBMITTED = 'SUBMITTED',
+  GRADED = 'GRADED',
+}

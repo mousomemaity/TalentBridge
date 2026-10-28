@@ -10,7 +10,14 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AiService } from './ai.service';
-import { GenerateJobDescriptionDto, BiasCheckDto, ExplainMatchQueryDto } from './dto/ai.dto';
+import {
+  GenerateJobDescriptionDto,
+  BiasCheckDto,
+  ExplainMatchQueryDto,
+  AnalyzeResumeDto,
+  ParseResumeTextDto,
+  GenerateInterviewQuestionsDto,
+} from './dto/ai.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -63,6 +70,30 @@ export class AiController {
     return this.aiService.explainMatch(candidateId, query.jobId);
   }
 
+  @Post('me/resume/analyze')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.CANDIDATE, UserRole.SUPER_ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Analyze candidate profile and resume for strengths and gaps' })
+  async analyzeMyResume(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: AnalyzeResumeDto,
+  ) {
+    return this.aiService.analyzeResume(user.userId, dto);
+  }
+
+  @Post('me/resume/parse-text')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.CANDIDATE, UserRole.SUPER_ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Parse text into candidate profile schema' })
+  async parseResumeText(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: ParseResumeTextDto,
+  ) {
+    return this.aiService.parseResumeText(dto.text);
+  }
+
   @Post('app/jobs/ai/generate-description')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.RECRUITER, UserRole.COMPANY_ADMIN, UserRole.SUPER_ADMIN)
@@ -79,5 +110,23 @@ export class AiController {
   @ApiOperation({ summary: 'Check job requisition text for exclusionary or biased language' })
   async checkBias(@Body() dto: BiasCheckDto) {
     return this.aiService.checkBias(dto);
+  }
+
+  @Post('app/jobs/ai/interview-questions')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.RECRUITER, UserRole.HIRING_MANAGER, UserRole.COMPANY_ADMIN, UserRole.SUPER_ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Generate structured interview question suggestions for job' })
+  async generateInterviewQuestions(@Body() dto: GenerateInterviewQuestionsDto) {
+    return this.aiService.generateInterviewQuestions(dto);
+  }
+
+  @Get('app/candidates/:id/ai-summary')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.RECRUITER, UserRole.HIRING_MANAGER, UserRole.COMPANY_ADMIN, UserRole.SUPER_ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Generate objective candidate summary for authorized recruiters' })
+  async getCandidateRecruiterSummary(@Param('id') candidateId: string) {
+    return this.aiService.generateCandidateRecruiterSummary(candidateId);
   }
 }

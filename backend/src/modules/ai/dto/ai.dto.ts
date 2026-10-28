@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsArray, IsNumber } from 'class-validator';
 
 export class GenerateJobDescriptionDto {
   @ApiProperty({ example: 'Staff Backend Architect' })
@@ -40,4 +40,37 @@ export class ExplainMatchQueryDto {
   @IsOptional()
   @IsString()
   candidateId?: string;
+}
+
+export class AnalyzeResumeDto {
+  @ApiProperty({ example: 'Senior Full Stack Engineer', required: false })
+  @IsOptional()
+  @IsString()
+  targetRole?: string;
+}
+
+export class ParseResumeTextDto {
+  @ApiProperty({ example: 'John Doe\nSoftware Engineer\nSkills: TypeScript, NestJS...' })
+  @IsString()
+  @IsNotEmpty()
+  text: string;
+}
+
+export class GenerateInterviewQuestionsDto {
+  @ApiProperty({ example: 'Backend Architect' })
+  @IsString()
+  @IsNotEmpty()
+  jobTitle: string;
+
+  @ApiProperty({ example: ['TypeScript', 'Kubernetes', 'MongoDB'], required: false })
+  @IsOptional()
+  @IsArray()
+  skills?: string[];
+}
+
+export class CandidateRecruiterSummaryDto {
+  @ApiProperty({ example: 'candidate-user-uuid-5678' })
+  @IsString()
+  @IsNotEmpty()
+  candidateId: string;
 }

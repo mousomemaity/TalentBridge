@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "TalentBridge",
-    "slug": "TalentBridge",
+    "name": "mobile",
+    "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "talentbridge",
+    "scheme": "mobile",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"

@@ -1,0 +1,2444 @@
+openapi: 3.0.0
+paths: 
+  /api/v1/auth/register/candidate: 
+    post: 
+      operationId: AuthController_registerCandidate
+      summary: Register a new candidate
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/RegisterCandidateDto"
+      responses: 
+        201: 
+          description: Candidate registered successfully
+        409: 
+          description: Email already exists
+      tags: 
+        - Auth
+  /api/v1/auth/register/employer: 
+    post: 
+      operationId: AuthController_registerEmployer
+      summary: Register a new employer/company and admin account
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/RegisterEmployerDto"
+      responses: 
+        201: 
+          description: Employer and company registered successfully
+        409: 
+          description: Email already exists
+      tags: 
+        - Auth
+  /api/v1/auth/login: 
+    post: 
+      operationId: AuthController_login
+      summary: User login with email and password
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/LoginDto"
+      responses: 
+        200: 
+          description: User authenticated successfully
+        401: 
+          description: Invalid credentials
+      tags: 
+        - Auth
+  /api/v1/auth/refresh: 
+    post: 
+      operationId: AuthController_refresh
+      summary: Rotate refresh token and obtain new access token
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/RefreshTokenDto"
+      responses: 
+        200: 
+          description: Tokens rotated successfully
+        401: 
+          description: Invalid or revoked refresh token
+      tags: 
+        - Auth
+  /api/v1/auth/logout: 
+    post: 
+      operationId: AuthController_logout
+      summary: Logout and revoke current session
+      parameters: []
+      responses: 
+        200: 
+          description: Logged out successfully
+      tags: 
+        - Auth
+      security: 
+        - bearer: []
+  /api/v1/auth/forgot-password: 
+    post: 
+      operationId: AuthController_forgotPassword
+      summary: Request password reset email
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/ForgotPasswordDto"
+      responses: 
+        200: 
+          description: Generic response sent
+      tags: 
+        - Auth
+  /api/v1/auth/reset-password: 
+    post: 
+      operationId: AuthController_resetPassword
+      summary: Reset password using token
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/ResetPasswordDto"
+      responses: 
+        200: 
+          description: Password reset successfully
+        400: 
+          description: Invalid or expired token
+      tags: 
+        - Auth
+  /api/v1/auth/verify-email: 
+    post: 
+      operationId: AuthController_verifyEmail
+      summary: Confirm email verification token
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/VerifyEmailDto"
+      responses: 
+        200: 
+          description: Email verified successfully
+      tags: 
+        - Auth
+  /api/v1/jobs: 
+    get: 
+      operationId: JobsController_searchJobs
+      summary: Search and filter published jobs (Public)
+      parameters: 
+        - name: q
+          required: false
+          in: query
+          description: "Search keywords (title, skills, description)"
+          schema: 
+            type: string
+        - name: location
+          required: false
+          in: query
+          description: Location filter
+          schema: 
+            type: string
+        - name: workplaceType
+          required: false
+          in: query
+          schema: 
+            enum: 
+              - ONSITE
+              - REMOTE
+              - HYBRID
+            type: string
+        - name: jobType
+          required: false
+          in: query
+          schema: 
+            enum: 
+              - FULL_TIME
+              - PART_TIME
+              - CONTRACT
+              - INTERNSHIP
+            type: string
+        - name: department
+          required: false
+          in: query
+          description: Department filter
+          schema: 
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema: 
+            example: 1
+            type: string
+        - name: limit
+          required: false
+          in: query
+          schema: 
+            example: 20
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Jobs
+  /api/v1/jobs/{slug}: 
+    get: 
+      operationId: JobsController_getJobBySlug
+      summary: Get published job detail by unique slug (Public)
+      parameters: 
+        - name: slug
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Jobs
+  /api/v1/app/jobs: 
+    get: 
+      operationId: JobsController_getTenantJobs
+      summary: List all jobs for employer company (ATS)
+      parameters: 
+        - name: status
+          required: true
+          in: query
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Jobs
+      security: 
+        - bearer: []
+    post: 
+      operationId: JobsController_createJob
+      summary: Create a new job draft (ATS)
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreateJobDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Jobs
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}: 
+    get: 
+      operationId: JobsController_getTenantJobById
+      summary: Get internal job details and stages by ID (ATS)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Jobs
+      security: 
+        - bearer: []
+    patch: 
+      operationId: JobsController_updateJob
+      summary: Update job requisition details (ATS)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdateJobDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Jobs
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}/publish: 
+    post: 
+      operationId: JobsController_publishJob
+      summary: Publish job requisition to public board (ATS)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Jobs
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}/pause: 
+    post: 
+      operationId: JobsController_pauseJob
+      summary: Pause applications for a job (ATS)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Jobs
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}/close: 
+    post: 
+      operationId: JobsController_closeJob
+      summary: Close a job requisition (ATS)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Jobs
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}/duplicate: 
+    post: 
+      operationId: JobsController_duplicateJob
+      summary: Duplicate an existing job requisition (ATS)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Jobs
+      security: 
+        - bearer: []
+  /api/v1/me/profile: 
+    get: 
+      operationId: CandidatesController_getProfile
+      summary: Get current logged-in candidate profile
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Candidate Portal
+      security: 
+        - bearer: []
+    patch: 
+      operationId: CandidatesController_updateProfile
+      summary: "Update candidate headline, summary, location, experience years"
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdateProfileDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Candidate Portal
+      security: 
+        - bearer: []
+  /api/v1/me/experiences: 
+    post: 
+      operationId: CandidatesController_addExperience
+      summary: Add an employment experience
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/AddExperienceDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Candidate Portal
+      security: 
+        - bearer: []
+  /api/v1/me/experiences/{id}: 
+    delete: 
+      operationId: CandidatesController_deleteExperience
+      summary: Remove an employment experience
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Candidate Portal
+      security: 
+        - bearer: []
+  /api/v1/me/educations: 
+    post: 
+      operationId: CandidatesController_addEducation
+      summary: Add education credentials
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/AddEducationDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Candidate Portal
+      security: 
+        - bearer: []
+  /api/v1/me/skills: 
+    put: 
+      operationId: CandidatesController_updateSkills
+      summary: Replace/update candidate skills list
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdateSkillsDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Candidate Portal
+      security: 
+        - bearer: []
+  /api/v1/me/preferences: 
+    patch: 
+      operationId: CandidatesController_updatePreferences
+      summary: "Update job preferences (desired roles, locations, salary, remote)"
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdatePreferencesDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Candidate Portal
+      security: 
+        - bearer: []
+  /api/v1/me/visibility: 
+    patch: 
+      operationId: CandidatesController_updateVisibility
+      summary: Update candidate profile visibility and company blocklist
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdateVisibilityDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Candidate Portal
+      security: 
+        - bearer: []
+  /api/v1/jobs/{id}/apply: 
+    post: 
+      operationId: ApplicationsController_apply
+      summary: Apply for a published job (one application per candidate per job)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/ApplyJobDto"
+      responses: 
+        201: 
+          description: Application submitted successfully
+        409: 
+          description: Duplicate application detected
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/me/applications: 
+    get: 
+      operationId: ApplicationsController_getMyApplications
+      summary: List candidate submitted applications
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/me/applications/{id}: 
+    get: 
+      operationId: ApplicationsController_getMyApplicationById
+      summary: Get candidate application details and status timeline
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/me/applications/{id}/withdraw: 
+    post: 
+      operationId: ApplicationsController_withdrawApplication
+      summary: Withdraw candidate application
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}/applications: 
+    get: 
+      operationId: ApplicationsController_getJobApplications
+      summary: Get job pipeline candidates grouped by stage (Kanban)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/app/applications/{id}: 
+    get: 
+      operationId: ApplicationsController_getApplication360
+      summary: Get Application 360 overview for a candidate
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/app/applications/{id}/stage: 
+    patch: 
+      operationId: ApplicationsController_moveStage
+      summary: Move candidate application stage with optimistic concurrency check
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/MoveStageDto"
+      responses: 
+        200: 
+          description: Stage updated and stage history recorded
+        409: 
+          description: Version conflict - application modified concurrently
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/app/applications/{id}/reject: 
+    post: 
+      operationId: ApplicationsController_rejectApplication
+      summary: Reject an application with documented reason
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/RejectApplicationDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/app/applications/{id}/hire: 
+    post: 
+      operationId: ApplicationsController_markHired
+      summary: Mark an applicant as hired
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/app/applications/bulk/move: 
+    post: 
+      operationId: ApplicationsController_bulkMove
+      summary: Bulk move candidates across pipeline stages
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/BulkMoveDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/app/applications/bulk/reject: 
+    post: 
+      operationId: ApplicationsController_bulkReject
+      summary: Bulk reject candidates with notification reason
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/BulkRejectDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Applications
+      security: 
+        - bearer: []
+  /api/v1/tenant: 
+    get: 
+      operationId: TenantsController_getOwnTenant
+      summary: Get current user employer company profile
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Companies & Team"
+      security: 
+        - bearer: []
+    patch: 
+      operationId: TenantsController_updateOwnTenant
+      summary: Update company profile (Company Admin only)
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdateTenantDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Companies & Team"
+      security: 
+        - bearer: []
+  /api/v1/companies: 
+    get: 
+      operationId: TenantsController_getPublicCompanies
+      summary: Public company directory
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Companies & Team"
+  /api/v1/companies/{slug}: 
+    get: 
+      operationId: TenantsController_getPublicCompanyBySlug
+      summary: Public company profile by slug
+      parameters: 
+        - name: slug
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Companies & Team"
+  /api/v1/team/members: 
+    get: 
+      operationId: TenantsController_getTeamMembers
+      summary: List team members in own company
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Companies & Team"
+      security: 
+        - bearer: []
+  /api/v1/team/invitations: 
+    post: 
+      operationId: TenantsController_inviteTeamMember
+      summary: Invite a new team member to company
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/InviteMemberDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Companies & Team"
+      security: 
+        - bearer: []
+  /api/v1/team/members/{id}: 
+    patch: 
+      operationId: TenantsController_updateTeamMember
+      summary: Update team member role or active status
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdateMemberDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Companies & Team"
+      security: 
+        - bearer: []
+  /api/v1/me/resumes: 
+    get: 
+      operationId: ResumesController_getResumes
+      summary: List candidate uploaded resumes
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Resumes
+      security: 
+        - bearer: []
+    post: 
+      operationId: ResumesController_createResume
+      summary: Register uploaded resume after client upload
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreateResumeDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Resumes
+      security: 
+        - bearer: []
+  /api/v1/me/resumes/{id}/parse: 
+    post: 
+      operationId: ResumesController_parseResume
+      summary: Trigger AI parse for a specific resume
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Resumes
+      security: 
+        - bearer: []
+  /api/v1/me/resumes/{id}/parsed: 
+    get: 
+      operationId: ResumesController_getParsedResume
+      summary: Get parsed resume structured data for review
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Resumes
+      security: 
+        - bearer: []
+  /api/v1/me/resumes/{id}/apply-parsed: 
+    post: 
+      operationId: ResumesController_applyParsedData
+      summary: Merge parsed resume fields into candidate profile
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Resumes
+      security: 
+        - bearer: []
+  /api/v1/me/resumes/{id}/default: 
+    patch: 
+      operationId: ResumesController_setDefaultResume
+      summary: Set resume as candidate default
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Resumes
+      security: 
+        - bearer: []
+  /api/v1/me/resumes/{id}: 
+    delete: 
+      operationId: ResumesController_deleteResume
+      summary: Delete a resume
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Resumes
+      security: 
+        - bearer: []
+  /api/v1/files/presign: 
+    post: 
+      operationId: FilesController_presign
+      summary: Obtain presigned upload URL for resumes or documents
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/PresignFileDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Files & Uploads"
+      security: 
+        - bearer: []
+  /api/v1/me/saved-jobs: 
+    get: 
+      operationId: SavedJobsController_getSavedJobs
+      summary: List candidate saved jobs
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Saved Jobs & Alerts"
+      security: 
+        - bearer: []
+  /api/v1/me/saved-jobs/{jobId}: 
+    post: 
+      operationId: SavedJobsController_saveJob
+      summary: Save a job to candidate favorites (enforces uniqueness)
+      parameters: 
+        - name: jobId
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Saved Jobs & Alerts"
+      security: 
+        - bearer: []
+    delete: 
+      operationId: SavedJobsController_unsaveJob
+      summary: Remove a job from candidate saved jobs
+      parameters: 
+        - name: jobId
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Saved Jobs & Alerts"
+      security: 
+        - bearer: []
+  /api/v1/me/saved-searches: 
+    get: 
+      operationId: SavedJobsController_getSavedSearches
+      summary: List candidate saved searches and job alerts
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Saved Jobs & Alerts"
+      security: 
+        - bearer: []
+    post: 
+      operationId: SavedJobsController_createSavedSearch
+      summary: Create a saved search / email job alert
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreateSavedSearchDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Saved Jobs & Alerts"
+      security: 
+        - bearer: []
+  /api/v1/me/saved-searches/{id}: 
+    delete: 
+      operationId: SavedJobsController_deleteSavedSearch
+      summary: Delete a saved search / alert
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Saved Jobs & Alerts"
+      security: 
+        - bearer: []
+  /api/v1/app/pipeline-templates: 
+    get: 
+      operationId: PipelinesController_getTemplates
+      summary: List reusable ATS pipeline templates
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Pipelines & Stages"
+      security: 
+        - bearer: []
+    post: 
+      operationId: PipelinesController_createTemplate
+      summary: Create a new pipeline template
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreatePipelineTemplateDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Pipelines & Stages"
+      security: 
+        - bearer: []
+  /api/v1/app/pipeline-templates/{id}: 
+    patch: 
+      operationId: PipelinesController_updateTemplate
+      summary: Update an existing pipeline template
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Pipelines & Stages"
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}/stages: 
+    post: 
+      operationId: PipelinesController_addStage
+      summary: Add a customized stage to a job pipeline
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/AddJobStageDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Pipelines & Stages"
+      security: 
+        - bearer: []
+  /api/v1/app/stages/{id}: 
+    patch: 
+      operationId: PipelinesController_updateStage
+      summary: Rename stage or modify SLA days
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdateJobStageDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Pipelines & Stages"
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}/stages/order: 
+    put: 
+      operationId: PipelinesController_reorderStages
+      summary: Reorder stages in a job pipeline
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/ReorderStagesDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Pipelines & Stages"
+      security: 
+        - bearer: []
+  /api/v1/me/recommended-jobs: 
+    get: 
+      operationId: AiController_getRecommendedJobs
+      summary: Get AI recommended jobs matched to candidate profile
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "AI & Matching"
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/{id}/recommended-candidates: 
+    get: 
+      operationId: AiController_getRecommendedCandidates
+      summary: Get AI recommended candidates matched to job requirements
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "AI & Matching"
+      security: 
+        - bearer: []
+  /api/v1/matching/explain: 
+    get: 
+      operationId: AiController_explainMatch
+      summary: Get explainable match score breakdown for a candidate and job pair
+      parameters: 
+        - name: jobId
+          required: true
+          in: query
+          schema: 
+            example: job-uuid-1234
+            type: string
+        - name: candidateId
+          required: false
+          in: query
+          schema: 
+            example: candidate-user-uuid-5678
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "AI & Matching"
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/ai/generate-description: 
+    post: 
+      operationId: AiController_generateJobDescription
+      summary: Generate job description draft using AI
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/GenerateJobDescriptionDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "AI & Matching"
+      security: 
+        - bearer: []
+  /api/v1/app/jobs/ai/bias-check: 
+    post: 
+      operationId: AiController_checkBias
+      summary: Check job requisition text for exclusionary or biased language
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/BiasCheckDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "AI & Matching"
+      security: 
+        - bearer: []
+  /api/v1/notifications: 
+    get: 
+      operationId: NotificationsController_getNotifications
+      summary: List notifications for current authenticated user
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Notifications
+      security: 
+        - bearer: []
+  /api/v1/notifications/read: 
+    post: 
+      operationId: NotificationsController_markRead
+      summary: Mark notifications as read (either specific IDs or all)
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/MarkReadDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - Notifications
+      security: 
+        - bearer: []
+  /api/v1/notifications/preferences: 
+    patch: 
+      operationId: NotificationsController_updatePreferences
+      summary: Update notification channel preferences
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/NotificationPreferencesDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - Notifications
+      security: 
+        - bearer: []
+  /api/v1/app/interviews: 
+    get: 
+      operationId: InterviewsController_getTenantInterviews
+      summary: List company interviews (ATS)
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+    post: 
+      operationId: InterviewsController_createInterview
+      summary: Schedule an interview for an application (ATS)
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreateInterviewDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/app/interviews/{id}/cancel: 
+    post: 
+      operationId: InterviewsController_cancelInterview
+      summary: Cancel a scheduled interview
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/app/interviews/{id}/scorecards: 
+    post: 
+      operationId: InterviewsController_submitScorecard
+      summary: Submit interview scorecard evaluation
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/SubmitScorecardDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/app/applications/{id}/scorecards: 
+    get: 
+      operationId: InterviewsController_getApplicationScorecards
+      summary: Get aggregated scorecards for an application
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/me/interviews: 
+    get: 
+      operationId: InterviewsController_getCandidateInterviews
+      summary: List candidate scheduled interviews
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/app/assessments: 
+    get: 
+      operationId: InterviewsController_getAssessments
+      summary: List company assessment tests
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+    post: 
+      operationId: InterviewsController_createAssessment
+      summary: Create a new skills assessment
+      parameters: []
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreateAssessmentDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/app/assessments/{id}/invite: 
+    post: 
+      operationId: InterviewsController_inviteToAssessment
+      summary: Invite an applicant to complete an assessment
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/InviteAssessmentDto"
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/app/assessments/{id}/results: 
+    get: 
+      operationId: InterviewsController_getAssessmentResults
+      summary: View candidate results table for an assessment
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/me/assessments: 
+    get: 
+      operationId: InterviewsController_getMyAssessments
+      summary: Get candidate pending skills tests
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/attempts/{inviteId}/start: 
+    post: 
+      operationId: InterviewsController_startAttempt
+      summary: Start assessment attempt and start server timer
+      parameters: 
+        - name: inviteId
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/attempts/{id}/answers/{qid}: 
+    put: 
+      operationId: InterviewsController_saveAnswer
+      summary: Autosave an answer for a specific question
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+        - name: qid
+          required: true
+          in: path
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/SaveAnswerDto"
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/attempts/{id}/submit: 
+    post: 
+      operationId: InterviewsController_submitAttempt
+      summary: Final submit assessment attempt for grading
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          schema: 
+            type: string
+      responses: 
+        201: 
+          description: 
+      tags: 
+        - "Interviews & Assessments"
+      security: 
+        - bearer: []
+  /api/v1/app/reports/funnel: 
+    get: 
+      operationId: ReportsController_getFunnelReport
+      summary: Get candidate conversion funnel analytics by stage
+      parameters: 
+        - name: jobId
+          required: true
+          in: query
+          schema: 
+            type: string
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Reports & Audit"
+      security: 
+        - bearer: []
+  /api/v1/app/reports/sources: 
+    get: 
+      operationId: ReportsController_getSourceReport
+      summary: Get candidate sourcing effectiveness report
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Reports & Audit"
+      security: 
+        - bearer: []
+  /api/v1/app/reports/time-to-hire: 
+    get: 
+      operationId: ReportsController_getTimeToHireReport
+      summary: Get average time-to-hire and time-in-stage analytics
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Reports & Audit"
+      security: 
+        - bearer: []
+  /api/v1/audit-logs: 
+    get: 
+      operationId: ReportsController_getAuditLogs
+      summary: Query append-only audit logs for security and compliance
+      parameters: []
+      responses: 
+        200: 
+          description: 
+      tags: 
+        - "Reports & Audit"
+      security: 
+        - bearer: []
+info: 
+  title: TalentBridge Core API
+  description: "Official TalentBridge API Contract for Job Portal & Applicant Tracking System (ATS). Integrates Candidate Portal, Employer ATS, Shared Database, and AI Adapter."
+  version: 1.0.0
+  contact: {}
+tags: 
+  - name: Auth
+    description: "Candidate & Employer authentication, sessions, refresh rotation"
+  - name: "Companies & Team"
+    description: "Company account profiles, team members, invitations"
+  - name: Candidate Portal
+    description: "Candidate self-owned profiles, skills, education, preferences"
+  - name: Resumes
+    description: "Resume registration, AI parsing, profile merging"
+  - name: "Files & Uploads"
+    description: Presigned upload URLs
+  - name: Jobs
+    description: "Public job board search, employer ATS requisitions, pipeline publication"
+  - name: Applications
+    description: "Job applications, Kanban stages, optimistic locking, activity history"
+  - name: "Pipelines & Stages"
+    description: "Pipeline templates, customizable job stages, reordering"
+  - name: "Saved Jobs & Alerts"
+    description: "Candidate saved job bookmarks, search alerts"
+  - name: "AI & Matching"
+    description: "AI matching explainability, recommendations, JD generator, bias checker"
+  - name: "Interviews & Assessments"
+    description: "Interview scheduling, scorecards, timed assessments"
+  - name: Notifications
+    description: Candidate and employer real-time alerts and preferences
+  - name: "Reports & Audit"
+    description: "Hiring funnel metrics, sourcing analytics, time-to-hire, audit trail"
+servers: []
+components: 
+  securitySchemes: 
+    bearer: 
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+      name: Authorization
+      description: "Enter your JWT access token (Bearer <token>)"
+      in: header
+  schemas: 
+    RegisterCandidateDto: 
+      type: object
+      properties: 
+        email: 
+          type: string
+          example: "candidate@example.com"
+          description: Candidate email address
+        password: 
+          type: string
+          example: "SecureP@ss123"
+          description: Password (min 8 characters)
+        firstName: 
+          type: string
+          example: Alex
+          description: First name
+        lastName: 
+          type: string
+          example: Morgan
+          description: Last name
+        phone: 
+          type: string
+          example: +1-555-0192
+          description: Phone number
+      required: 
+        - email
+        - password
+        - firstName
+        - lastName
+    RegisterEmployerDto: 
+      type: object
+      properties: 
+        email: 
+          type: string
+          example: "employer@acme.inc"
+          description: Employer work email
+        password: 
+          type: string
+          example: "SecureEmpP@ss123"
+          description: Password (min 8 characters)
+        firstName: 
+          type: string
+          example: Sarah
+          description: First name
+        lastName: 
+          type: string
+          example: Connor
+          description: Last name
+        companyName: 
+          type: string
+          example: Acme Corp
+          description: Company name
+        companySlug: 
+          type: string
+          example: acme-corp
+          description: Optional unique URL slug for company
+        domain: 
+          type: string
+          example: acme.inc
+          description: Company primary domain
+      required: 
+        - email
+        - password
+        - firstName
+        - lastName
+        - companyName
+    LoginDto: 
+      type: object
+      properties: 
+        email: 
+          type: string
+          example: "user@example.com"
+        password: 
+          type: string
+          example: "SecureP@ss123"
+      required: 
+        - email
+        - password
+    RefreshTokenDto: 
+      type: object
+      properties: 
+        refreshToken: 
+          type: string
+          example: eyJhbGciOi...
+          description: Refresh token string (can also be passed via HttpOnly cookie)
+      required: 
+        - refreshToken
+    ForgotPasswordDto: 
+      type: object
+      properties: 
+        email: 
+          type: string
+          example: "user@example.com"
+      required: 
+        - email
+    ResetPasswordDto: 
+      type: object
+      properties: 
+        token: 
+          type: string
+          example: reset-token-xyz
+        newPassword: 
+          type: string
+          example: "NewSecureP@ss123"
+      required: 
+        - token
+        - newPassword
+    VerifyEmailDto: 
+      type: object
+      properties: 
+        token: 
+          type: string
+          example: verification-token-xyz
+      required: 
+        - token
+    CreateJobDto: 
+      type: object
+      properties: 
+        title: 
+          type: string
+          example: Senior Backend Engineer
+        slug: 
+          type: string
+          example: senior-backend-engineer
+        department: 
+          type: string
+          example: Engineering
+        location: 
+          type: string
+          example: Remote - US
+        jobType: 
+          type: string
+          example: FULL_TIME
+          enum: 
+            - FULL_TIME
+            - PART_TIME
+            - CONTRACT
+            - INTERNSHIP
+        workplaceType: 
+          type: string
+          example: REMOTE
+          enum: 
+            - ONSITE
+            - REMOTE
+            - HYBRID
+        salaryMin: 
+          type: number
+          example: 140000
+        salaryMax: 
+          type: number
+          example: 180000
+        currency: 
+          type: string
+          example: USD
+        description: 
+          type: string
+          example: We are seeking an experienced Backend Engineer to scale our core platforms.
+        requirements: 
+          example: 
+            - 5+ years Node.js/TypeScript
+            - Microservices design
+            - MongoDB/Postgres experience
+          type: array
+          items: 
+            type: string
+        skills: 
+          example: 
+            - TypeScript
+            - NestJS
+            - MongoDB
+            - Docker
+            - Redis
+          type: array
+          items: 
+            type: string
+        benefits: 
+          example: 
+            - "Health, Dental, Vision"
+            - 401k match
+            - Unlimited PTO
+          type: array
+          items: 
+            type: string
+        openings: 
+          type: number
+          example: 2
+        screeningQuestions: 
+          example: 
+            - question: "How many years of TypeScript experience do you have?"
+              type: NUMBER
+              required: true
+              isKnockout: false
+          type: array
+          items: 
+            type: string
+      required: 
+        - title
+        - jobType
+        - workplaceType
+        - description
+    UpdateJobDto: 
+      type: object
+      properties: 
+        title: 
+          type: string
+          example: Staff Backend Engineer
+        department: 
+          type: string
+          example: Platform Engineering
+        location: 
+          type: string
+          example: "New York, NY"
+        jobType: 
+          type: string
+          enum: 
+            - FULL_TIME
+            - PART_TIME
+            - CONTRACT
+            - INTERNSHIP
+        workplaceType: 
+          type: string
+          enum: 
+            - ONSITE
+            - REMOTE
+            - HYBRID
+        salaryMin: 
+          type: number
+          example: 150000
+        salaryMax: 
+          type: number
+          example: 190000
+        description: 
+          type: string
+        requirements: 
+          type: array
+          items: 
+            type: string
+        skills: 
+          type: array
+          items: 
+            type: string
+        benefits: 
+          type: array
+          items: 
+            type: string
+        openings: 
+          type: number
+        screeningQuestions: 
+          type: array
+          items: 
+            type: string
+    UpdateProfileDto: 
+      type: object
+      properties: 
+        headline: 
+          type: string
+          example: Senior Full Stack Engineer
+        summary: 
+          type: string
+          example: Passionate developer with 6+ years of building web and mobile apps.
+        location: 
+          type: string
+          example: "San Francisco, CA"
+        yearsExperience: 
+          type: number
+          example: 6
+    AddExperienceDto: 
+      type: object
+      properties: 
+        title: 
+          type: string
+          example: Software Engineer
+        company: 
+          type: string
+          example: Tech Corp
+        location: 
+          type: string
+          example: "New York, NY"
+        startDate: 
+          type: string
+          example: 2022-01-01
+        endDate: 
+          type: string
+          example: 2024-03-01
+        current: 
+          type: boolean
+          example: false
+        description: 
+          type: string
+          example: Led core platform microservices migration.
+      required: 
+        - title
+        - company
+        - startDate
+    AddEducationDto: 
+      type: object
+      properties: 
+        institution: 
+          type: string
+          example: "University of California, Berkeley"
+        degree: 
+          type: string
+          example: Bachelor of Science
+        fieldOfStudy: 
+          type: string
+          example: Computer Science
+        startDate: 
+          type: string
+          example: 2018-08-01
+        endDate: 
+          type: string
+          example: 2022-05-01
+      required: 
+        - institution
+        - degree
+        - startDate
+    UpdateSkillsDto: 
+      type: object
+      properties: 
+        skills: 
+          example: 
+            - name: TypeScript
+              level: EXPERT
+              yearsExperience: 5
+            - name: React
+              level: ADVANCED
+              yearsExperience: 4
+            - name: NestJS
+              level: ADVANCED
+              yearsExperience: 3
+          type: array
+          items: 
+            type: string
+      required: 
+        - skills
+    UpdatePreferencesDto: 
+      type: object
+      properties: 
+        roles: 
+          example: 
+            - Backend Engineer
+            - Full Stack Engineer
+          type: array
+          items: 
+            type: string
+        locations: 
+          example: 
+            - Remote
+            - New York
+            - San Francisco
+          type: array
+          items: 
+            type: string
+        salaryMin: 
+          type: number
+          example: 120000
+        remoteOnly: 
+          type: boolean
+          example: true
+        noticePeriodDays: 
+          type: number
+          example: 30
+    UpdateVisibilityDto: 
+      type: object
+      properties: 
+        visibility: 
+          type: string
+          example: PUBLIC
+          enum: 
+            - PUBLIC
+            - RECRUITERS_ONLY
+            - HIDDEN
+        openToWork: 
+          type: boolean
+          example: true
+        blockedCompanyIds: 
+          example: []
+          type: array
+          items: 
+            type: string
+      required: 
+        - visibility
+    ApplyJobDto: 
+      type: object
+      properties: 
+        resumeId: 
+          type: string
+          example: resume-uuid-1234
+        coverLetter: 
+          type: string
+          example: I am excited to apply for this role because of my deep background in distributed systems...
+        screeningAnswers: 
+          type: object
+          example: 
+            experienceYears: 5
+            authorizedToWork: true
+    MoveStageDto: 
+      type: object
+      properties: 
+        stageId: 
+          type: string
+          example: stage-uuid-5678
+          description: Target stage ID
+        version: 
+          type: number
+          example: 1
+          description: Current version for optimistic locking
+        reason: 
+          type: string
+          example: Advanced after technical screening interview
+      required: 
+        - stageId
+        - version
+    RejectApplicationDto: 
+      type: object
+      properties: 
+        reason: 
+          type: string
+          example: Position filled by another candidate
+      required: 
+        - reason
+    BulkMoveDto: 
+      type: object
+      properties: 
+        applicationIds: 
+          example: 
+            - app-id-1
+            - app-id-2
+          type: array
+          items: 
+            type: string
+        stageId: 
+          type: string
+          example: stage-uuid-5678
+      required: 
+        - applicationIds
+        - stageId
+    BulkRejectDto: 
+      type: object
+      properties: 
+        applicationIds: 
+          example: 
+            - app-id-1
+            - app-id-2
+          type: array
+          items: 
+            type: string
+        reason: 
+          type: string
+          example: Role requirements updated
+      required: 
+        - applicationIds
+        - reason
+    UpdateTenantDto: 
+      type: object
+      properties: 
+        name: 
+          type: string
+          example: Acme Technologies Inc.
+        logoUrl: 
+          type: string
+          example: "https://cdn.example.com/logo.png"
+        domain: 
+          type: string
+          example: acme.com
+        settings: 
+          type: object
+          example: 
+            bio: Innovating HRTech
+            primaryColor: "#2563eb"
+    InviteMemberDto: 
+      type: object
+      properties: 
+        email: 
+          type: string
+          example: "colleague@acme.com"
+        role: 
+          type: string
+          example: RECRUITER
+          enum: 
+            - RECRUITER
+            - HIRING_MANAGER
+            - COMPANY_ADMIN
+        department: 
+          type: string
+          example: Engineering
+        firstName: 
+          type: string
+          example: Jane
+        lastName: 
+          type: string
+          example: Doe
+      required: 
+        - email
+        - role
+    UpdateMemberDto: 
+      type: object
+      properties: 
+        role: 
+          type: string
+          example: HIRING_MANAGER
+          enum: 
+            - RECRUITER
+            - HIRING_MANAGER
+            - COMPANY_ADMIN
+        department: 
+          type: string
+          example: Design
+        isActive: 
+          type: boolean
+          example: true
+    CreateResumeDto: 
+      type: object
+      properties: 
+        fileId: 
+          type: string
+          example: file-uuid-1234
+        fileName: 
+          type: string
+          example: alex_morgan_resume.pdf
+        fileUrl: 
+          type: string
+          example: "https://storage.talentbridge.io/resumes/file-uuid-1234.pdf"
+        mimeType: 
+          type: string
+          example: application/pdf
+        sizeBytes: 
+          type: number
+          example: 245000
+      required: 
+        - fileId
+        - fileName
+        - fileUrl
+    PresignFileDto: 
+      type: object
+      properties: 
+        fileName: 
+          type: string
+          example: resume.pdf
+        mimeType: 
+          type: string
+          example: application/pdf
+        category: 
+          type: string
+          example: RESUME
+          enum: 
+            - RESUME
+            - AVATAR
+            - DOCUMENT
+            - LOGO
+      required: 
+        - fileName
+        - mimeType
+        - category
+    CreateSavedSearchDto: 
+      type: object
+      properties: 
+        name: 
+          type: string
+          example: Remote React Jobs
+        query: 
+          type: string
+          example: React TypeScript
+        filters: 
+          type: object
+          example: 
+            workplaceType: REMOTE
+            jobType: FULL_TIME
+        frequency: 
+          type: string
+          example: DAILY
+          enum: 
+            - DAILY
+            - WEEKLY
+      required: 
+        - name
+    CreatePipelineTemplateDto: 
+      type: object
+      properties: 
+        name: 
+          type: string
+          example: Engineering Technical Pipeline
+        stages: 
+          example: 
+            - name: Applied
+              kind: APPLIED
+              position: 0
+              slaDays: 3
+            - name: Technical Assessment
+              kind: SCREEN
+              position: 1
+              slaDays: 3
+            - name: System Design Interview
+              kind: INTERVIEW
+              position: 2
+              slaDays: 5
+            - name: Executive Offer
+              kind: OFFER
+              position: 3
+              slaDays: 3
+            - name: Hired
+              kind: HIRED
+              position: 4
+              slaDays: 0
+            - name: Rejected
+              kind: REJECTED
+              position: 5
+              slaDays: 0
+          type: array
+          items: 
+            type: string
+      required: 
+        - name
+        - stages
+    AddJobStageDto: 
+      type: object
+      properties: 
+        name: 
+          type: string
+          example: Technical Screen
+        kind: 
+          type: string
+          example: SCREEN
+          enum: 
+            - APPLIED
+            - SCREEN
+            - INTERVIEW
+            - OFFER
+            - HIRED
+            - REJECTED
+        position: 
+          type: number
+          example: 2
+        slaDays: 
+          type: number
+          example: 4
+      required: 
+        - name
+        - kind
+    UpdateJobStageDto: 
+      type: object
+      properties: 
+        name: 
+          type: string
+          example: Final Interview Panel
+        slaDays: 
+          type: number
+          example: 5
+    ReorderStagesDto: 
+      type: object
+      properties: 
+        orders: 
+          example: 
+            - stageId: stage-1
+              position: 0
+            - stageId: stage-2
+              position: 1
+          type: array
+          items: 
+            type: string
+      required: 
+        - orders
+    GenerateJobDescriptionDto: 
+      type: object
+      properties: 
+        title: 
+          type: string
+          example: Staff Backend Architect
+        industry: 
+          type: string
+          example: FinTech
+        level: 
+          type: string
+          example: Senior
+        keySkills: 
+          type: string
+          example: "Kafka, Go, TypeScript, Event-driven systems"
+      required: 
+        - title
+    BiasCheckDto: 
+      type: object
+      properties: 
+        text: 
+          type: string
+          example: We are looking for a rockstar ninja developer who is aggressive in problem solving.
+      required: 
+        - text
+    MarkReadDto: 
+      type: object
+      properties: 
+        notificationIds: 
+          example: 
+            - notif-uuid-1
+            - notif-uuid-2
+          type: array
+          items: 
+            type: string
+    NotificationPreferencesDto: 
+      type: object
+      properties: 
+        emailAlerts: 
+          type: boolean
+          example: true
+        applicationUpdates: 
+          type: boolean
+          example: true
+        marketingDigest: 
+          type: boolean
+          example: false
+    CreateInterviewDto: 
+      type: object
+      properties: 
+        applicationId: 
+          type: string
+          example: app-uuid-1234
+        interviewerIds: 
+          example: 
+            - recruiter-user-id
+          type: array
+          items: 
+            type: string
+        type: 
+          type: string
+          example: VIDEO
+          enum: 
+            - PHONE
+            - VIDEO
+            - ONSITE
+        startsAt: 
+          type: string
+          example: "2026-11-01T14:00:00Z"
+        endsAt: 
+          type: string
+          example: "2026-11-01T15:00:00Z"
+        timezone: 
+          type: string
+          example: America/New_York
+        notes: 
+          type: string
+          example: Architecture and technical deep-dive
+      required: 
+        - applicationId
+        - interviewerIds
+        - type
+        - startsAt
+        - endsAt
+    SubmitScorecardDto: 
+      type: object
+      properties: 
+        ratings: 
+          example: 
+            - criterion: System Design
+              score: 5
+              notes: Clear understanding of event-driven patterns
+            - criterion: Communication
+              score: 4
+              notes: Articulate and structured
+          type: array
+          items: 
+            type: string
+        overallRating: 
+          type: number
+          example: 5
+          minimum: 1
+          maximum: 5
+        recommendation: 
+          type: string
+          example: STRONG_YES
+          enum: 
+            - STRONG_YES
+            - YES
+            - NEUTRAL
+            - NO
+            - STRONG_NO
+        summary: 
+          type: string
+          example: "Exceptional candidate, recommend moving to offer stage immediately."
+      required: 
+        - ratings
+        - overallRating
+        - recommendation
+        - summary
+    CreateAssessmentDto: 
+      type: object
+      properties: 
+        title: 
+          type: string
+          example: "TypeScript & Distributed Systems Evaluation"
+        description: 
+          type: string
+          example: 45-minute timed technical assessment
+        durationMinutes: 
+          type: number
+          example: 45
+        passScore: 
+          type: number
+          example: 70
+        questions: 
+          example: 
+            - prompt: "What is the primary difference between Promise.all and Promise.allSettled?"
+              type: MCQ
+              options: 
+                - A
+                - B
+                - C
+                - D
+              correctAnswer: B
+              points: 10
+          type: array
+          items: 
+            type: string
+      required: 
+        - title
+        - description
+        - durationMinutes
+        - passScore
+        - questions
+    InviteAssessmentDto: 
+      type: object
+      properties: 
+        applicationId: 
+          type: string
+          example: app-uuid-1234
+      required: 
+        - applicationId
+    SaveAnswerDto: 
+      type: object
+      properties: 
+        answer: 
+          type: object
+          example: B
+      required: 
+        - answer

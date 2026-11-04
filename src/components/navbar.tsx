@@ -1,28 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/context/auth-context";
 import {
   Briefcase,
-  Search,
   Building2,
-  User,
-  SlidersHorizontal,
-  Menu,
-  X,
-  LogOut,
   ChevronDown,
-  Sparkles,
-  LayoutDashboard,
   KanbanSquare,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Search,
+  User,
+  X
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function Navbar() {
   const pathname = usePathname();
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const { user, isAuthenticated, isCandidate, isEmployer, logout, switchRole } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
@@ -53,22 +56,20 @@ export function Navbar() {
           <nav className="hidden md:flex items-center gap-1">
             <Link
               href="/jobs"
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
-                pathname === "/jobs"
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${pathname === "/jobs"
                   ? "text-blue-600 bg-blue-50 font-semibold"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-              }`}
+                }`}
             >
               <Search className="h-4 w-4" />
               Find Jobs
             </Link>
             <Link
               href="/companies"
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
-                pathname.startsWith("/companies")
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${pathname.startsWith("/companies")
                   ? "text-blue-600 bg-blue-50 font-semibold"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-              }`}
+                }`}
             >
               <Building2 className="h-4 w-4" />
               Companies
@@ -87,7 +88,11 @@ export function Navbar() {
               <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Active Role:{" "}
               <span className="text-blue-600">
-                {isEmployer ? "Employer / Recruiter" : "Candidate"}
+                {hasMounted
+                  ? isEmployer
+                    ? "Employer / Recruiter"
+                    : "Candidate"
+                  : "Loading..."}
               </span>
               <ChevronDown className="h-3 w-3 text-slate-400" />
             </button>
@@ -105,9 +110,8 @@ export function Navbar() {
                     switchRole("candidate");
                     setRoleDropdownOpen(false);
                   }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                    isCandidate ? "bg-blue-50 text-blue-700 font-semibold" : "hover:bg-slate-50 text-slate-700"
-                  }`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${isCandidate ? "bg-blue-50 text-blue-700 font-semibold" : "hover:bg-slate-50 text-slate-700"
+                    }`}
                 >
                   <User className="h-4 w-4" />
                   Candidate (Alex Rivera)
@@ -117,9 +121,8 @@ export function Navbar() {
                     switchRole("employer");
                     setRoleDropdownOpen(false);
                   }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                    isEmployer ? "bg-purple-50 text-purple-700 font-semibold" : "hover:bg-slate-50 text-slate-700"
-                  }`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${isEmployer ? "bg-purple-50 text-purple-700 font-semibold" : "hover:bg-slate-50 text-slate-700"
+                    }`}
                 >
                   <KanbanSquare className="h-4 w-4" />
                   Employer ATS (Sarah Jenkins)

@@ -1,0 +1,91 @@
+export enum UserRole {
+  CANDIDATE = 'CANDIDATE',
+  EMPLOYER = 'EMPLOYER',
+  ADMIN = 'ADMIN',
+}
+
+export enum AccountStatus {
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  SUSPENDED = 'SUSPENDED',
+  DEACTIVATED = 'DEACTIVATED',
+}
+
+export enum CompanyMemberRole {
+  OWNER = 'OWNER',
+  ADMIN = 'ADMIN',
+  RECRUITER = 'RECRUITER',
+  HIRING_MANAGER = 'HIRING_MANAGER',
+  MEMBER = 'MEMBER',
+}
+
+export enum MembershipStatus {
+  INVITED = 'INVITED',
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+export enum ResumeParseStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  PARSED = 'PARSED',
+  FAILED = 'FAILED',
+}
+
+export enum JobAlertFrequency {
+  INSTANT = 'INSTANT',
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+}
+
+export enum EmploymentType {
+  FULL_TIME = 'FULL_TIME',
+  PART_TIME = 'PART_TIME',
+  CONTRACT = 'CONTRACT',
+  INTERNSHIP = 'INTERNSHIP',
+  TEMPORARY = 'TEMPORARY',
+}
+
+export enum RemoteType {
+  ON_SITE = 'ON_SITE',
+  HYBRID = 'HYBRID',
+  REMOTE = 'REMOTE',
+}
+
+export enum JobStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED',
+  PAUSED = 'PAUSED',
+  CLOSED = 'CLOSED',
+  ARCHIVED = 'ARCHIVED',
+}
+
+export enum PipelineStageCategory {
+  SOURCED = 'SOURCED',
+  APPLIED = 'APPLIED',
+  SCREENING = 'SCREENING',
+  INTERVIEW = 'INTERVIEW',
+  ASSESSMENT = 'ASSESSMENT',
+  OFFER = 'OFFER',
+  HIRED = 'HIRED',
+  REJECTED = 'REJECTED',
+}
+
+export enum ApplicationStatus {
+  SUBMITTED = 'SUBMITTED',
+  IN_REVIEW = 'IN_REVIEW',
+  SHORTLISTED = 'SHORTLISTED',
+  INTERVIEWING = 'INTERVIEWING',
+  OFFERED = 'OFFERED',
+  HIRED = 'HIRED',
+  REJECTED = 'REJECTED',
+  WITHDRAWN = 'WITHDRAWN',
+}
+
+export enum NotificationType {
+  APPLICATION_RECEIVED = 'APPLICATION_RECEIVED',
+  STAGE_CHANGED = 'STAGE_CHANGED',
+  JOB_ALERT_MATCH = 'JOB_ALERT_MATCH',
+  MESSAGE_RECEIVED = 'MESSAGE_RECEIVED',
+  SYSTEM = 'SYSTEM',
+}

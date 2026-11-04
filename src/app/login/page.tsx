@@ -7,7 +7,7 @@ import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Briefcase, Eye, EyeOff, Lock, Mail, Sparkles, CheckCircle2 } from "lucide-react";
+import { Navigation, Eye, EyeOff, Lock, Mail, Sparkles, CheckCircle2 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -52,8 +52,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link href="/" className="inline-flex items-center gap-2 mb-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md">
-            <Briefcase className="h-5 w-5" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-md">
+            <Navigation className="h-5 w-5 fill-white text-white" />
           </div>
           <span className="text-2xl font-black tracking-tight text-slate-900">JobPilot</span>
         </Link>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Briefcase, ExternalLink, Globe, Share2 } from "lucide-react";
+import { ExternalLink, Globe, Navigation, Share2 } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
@@ -11,8 +11,8 @@ export function Footer() {
           {/* Brand info */}
           <div className="space-y-4 md:col-span-1">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white font-bold">
-                <Briefcase className="h-4 w-4" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-sm">
+                <Navigation className="h-4 w-4 fill-white text-white" />
               </div>
               <span className="text-lg font-black tracking-tight text-slate-900">JobPilot</span>
             </Link>

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-context";
-import { Building2, Globe, Lock, Mail, ShieldCheck, User } from "lucide-react";
+import { Building2, Globe, Lock, Mail, Navigation, ShieldCheck, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -32,8 +32,8 @@ export default function EmployerRegisterPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-xl text-center">
         <Link href="/" className="inline-flex items-center gap-2 mb-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-600 text-white shadow-md">
-            <Building2 className="h-5 w-5" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-md">
+            <Navigation className="h-5 w-5 fill-white text-white" />
           </div>
           <span className="text-2xl font-black tracking-tight text-slate-900">JobPilot ATS</span>
         </Link>

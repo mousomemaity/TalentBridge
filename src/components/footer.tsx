@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Globe, Navigation, Share2 } from "lucide-react";
+import { Navigation, ExternalLink, Globe, Share2 } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {

@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/auth-context";
+import { Building2, Globe, Lock, Mail, ShieldCheck, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { Briefcase, Building2, Globe, Users, Lock, Mail, User, ShieldCheck } from "lucide-react";
+import React, { useState } from "react";
 
 export default function EmployerRegisterPage() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function EmployerRegisterPage() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-600 text-white shadow-md">
             <Building2 className="h-5 w-5" />
           </div>
-          <span className="text-2xl font-black tracking-tight text-slate-900">TalentBridge ATS</span>
+          <span className="text-2xl font-black tracking-tight text-slate-900">JobPilot ATS</span>
         </Link>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
           Register Your Company & Hiring Team

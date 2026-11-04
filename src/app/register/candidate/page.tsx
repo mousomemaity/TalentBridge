@@ -66,7 +66,7 @@ export default function CandidateRegisterPage() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md">
             <Briefcase className="h-5 w-5" />
           </div>
-          <span className="text-2xl font-black tracking-tight text-slate-900">TalentBridge</span>
+          <span className="text-2xl font-black tracking-tight text-slate-900">JobPilot</span>
         </Link>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
           Create Your Candidate Profile

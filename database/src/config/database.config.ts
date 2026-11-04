@@ -11,7 +11,7 @@ export interface DatabaseConfig {
 export function validateMongoUri(uri?: string): string {
   if (!uri || typeof uri !== 'string' || uri.trim() === '') {
     throw new Error(
-      '[TalentBridge Database] Missing MONGODB_URI environment variable.\n' +
+      '[JobPilot Database] Missing MONGODB_URI environment variable.\n' +
         'Please define MONGODB_URI in your environment or .env file.\n' +
         'Example local: mongodb://localhost:27017/talentbridge\n' +
         'Example Atlas: mongodb+srv://<username>:<password>@cluster0.example.mongodb.net/talentbridge?retryWrites=true&w=majority',
@@ -21,7 +21,7 @@ export function validateMongoUri(uri?: string): string {
   const trimmed = uri.trim();
   if (!trimmed.startsWith('mongodb://') && !trimmed.startsWith('mongodb+srv://')) {
     throw new Error(
-      `[TalentBridge Database] Invalid MONGODB_URI protocol. Must start with "mongodb://" or "mongodb+srv://". Provided: "${trimmed.substring(0, 15)}..."`,
+      `[JobPilot Database] Invalid MONGODB_URI protocol. Must start with "mongodb://" or "mongodb+srv://". Provided: "${trimmed.substring(0, 15)}..."`,
     );
   }
 

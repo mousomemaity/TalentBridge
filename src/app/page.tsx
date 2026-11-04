@@ -297,7 +297,7 @@ export default function HomePage() {
               Verified Partners
             </span>
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 mt-1">
-              Top Companies Hiring on TalentBridge
+              Top Companies Hiring on JobPilot
             </h2>
             <p className="text-slate-500 text-sm mt-3">
               Direct access to engineering leaders and recruiters without third-party agency spam.
@@ -338,7 +338,7 @@ export default function HomePage() {
               For Recruiters & Hiring Teams
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Streamline Your Entire Hiring Pipeline with TalentBridge ATS
+              Streamline Your Entire Hiring Pipeline with JobPilot ATS
             </h2>
             <p className="text-slate-300 text-base mt-4 leading-relaxed">
               Post jobs, evaluate AI candidate match breakdowns, collaborate with your hiring team,

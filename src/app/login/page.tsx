@@ -55,10 +55,10 @@ export default function LoginPage() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md">
             <Briefcase className="h-5 w-5" />
           </div>
-          <span className="text-2xl font-black tracking-tight text-slate-900">TalentBridge</span>
+          <span className="text-2xl font-black tracking-tight text-slate-900">JobPilot</span>
         </Link>
         <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-          Welcome back to TalentBridge
+          Welcome back to JobPilot
         </h2>
         <p className="mt-1 text-xs text-slate-500">
           Sign in to access your jobs, applications, or candidate hiring pipeline

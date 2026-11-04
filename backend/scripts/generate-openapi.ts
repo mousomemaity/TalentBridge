@@ -67,9 +67,9 @@ async function generateOpenApi() {
   app.setGlobalPrefix('api/v1');
 
   const config = new DocumentBuilder()
-    .setTitle('TalentBridge Core API')
+    .setTitle('JobPilot Core API')
     .setDescription(
-      'Official TalentBridge API Contract for Job Portal & Applicant Tracking System (ATS). Integrates Candidate Portal, Employer ATS, Shared Database, and AI Adapter.',
+      'Official JobPilot API Contract for Job Portal & Applicant Tracking System (ATS). Integrates Candidate Portal, Employer ATS, Shared Database, and AI Adapter.',
     )
     .setVersion('1.0.0')
     .addBearerAuth(

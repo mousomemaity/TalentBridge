@@ -43,7 +43,7 @@ export function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-black tracking-tight text-slate-900 flex items-center gap-1.5">
-                TalentBridge
+                JobPilot
                 <span className="inline-block h-2 w-2 rounded-full bg-blue-600"></span>
               </span>
               <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-600 -mt-1">

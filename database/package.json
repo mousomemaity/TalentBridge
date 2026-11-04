@@ -1,7 +1,7 @@
 {
   "name": "@talentbridge/database",
   "version": "1.0.0",
-  "description": "TalentBridge Mongoose models and NestJS database module",
+  "description": "JobPilot Mongoose models and NestJS database module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

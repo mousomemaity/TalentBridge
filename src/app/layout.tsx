@@ -9,9 +9,18 @@ import { Footer } from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TalentBridge — Job Portal & Applicant Tracking System (ATS)",
+  title: "JobPilot — Job Portal & Applicant Tracking System (ATS)",
   description:
     "A unified hiring platform connecting candidates with high-growth companies with an end-to-end Applicant Tracking System (ATS) and AI-assisted matching.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({

@@ -531,7 +531,7 @@ export const MOCK_INTERVIEWS: InterviewSession[] = [
     interviewType: "Technical",
     scheduledAt: "2026-10-26T17:00:00Z",
     durationMinutes: 60,
-    meetingLink: "https://meet.talentbridge.io/room/int-1-nexusai",
+    meetingLink: "https://meet.jobpilot.io/room/int-1-nexusai",
     status: "scheduled",
   },
   {
@@ -544,7 +544,7 @@ export const MOCK_INTERVIEWS: InterviewSession[] = [
     interviewType: "Cultural Fit",
     scheduledAt: "2026-10-27T19:00:00Z",
     durationMinutes: 45,
-    meetingLink: "https://meet.talentbridge.io/room/int-2-cloudscale",
+    meetingLink: "https://meet.jobpilot.io/room/int-2-cloudscale",
     status: "scheduled",
   },
 ];

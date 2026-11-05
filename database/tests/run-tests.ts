@@ -7,7 +7,7 @@ import { Models } from '../src/index';
 
 async function runTests() {
   console.log('=====================================================');
-  console.log('       TalentBridge Database Schema Test Suite       ');
+  console.log('         JobPilot Database Schema Test Suite         ');
   console.log('=====================================================');
   let passed = 0;
   let failed = 0;

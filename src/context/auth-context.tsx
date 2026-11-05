@@ -38,23 +38,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Default to candidate user for pleasant out-of-the-box experience
   const [user, setUser] = useState<User | null>(() => {
     if (typeof window === "undefined") return CANDIDATE_USER;
-    const savedRole = localStorage.getItem("talentbridge_role");
+    const savedRole = localStorage.getItem("jobpilot_role") || localStorage.getItem("talentbridge_role");
     return savedRole === "employer" ? EMPLOYER_USER : CANDIDATE_USER;
   });
-  const [token, setToken] = useState<string | null>("mock_jwt_token_talentbridge");
+  const [token, setToken] = useState<string | null>("mock_jwt_token_jobpilot");
 
   const login = async (role: "candidate" | "employer" = "candidate") => {
     const activeUser = role === "employer" ? EMPLOYER_USER : CANDIDATE_USER;
     const mockToken = `jwt_${role}_${Date.now()}`;
     setUser(activeUser);
     setToken(mockToken);
-    localStorage.setItem("talentbridge_token", mockToken);
-    localStorage.setItem("talentbridge_role", role);
+    localStorage.setItem("jobpilot_token", mockToken);
+    localStorage.setItem("jobpilot_role", role);
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
+    localStorage.removeItem("jobpilot_token");
+    localStorage.removeItem("jobpilot_role");
     localStorage.removeItem("talentbridge_token");
     localStorage.removeItem("talentbridge_role");
   };

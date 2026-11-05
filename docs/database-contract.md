@@ -1,6 +1,6 @@
-# TalentBridge — Shared Database Contract & Mongoose Specification
+# JobPilot — Shared Database Contract & Mongoose Specification
 
-This document defines the authoritative database schemas, fields, enums, relationships, indexes, and security policies for **TalentBridge**.
+This document defines the authoritative database schemas, fields, enums, relationships, indexes, and security policies for **JobPilot**.
 
 All branches (`feature/frontend`, `feature/backend`, `feature/database`, `feature/ai`) must conform to the models and identifiers documented here. Do not rename fields, alter enums, or modify types without coordinating across teams.
 

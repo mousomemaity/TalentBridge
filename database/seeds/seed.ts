@@ -22,7 +22,7 @@ dotenv.config();
 
 async function runSeed() {
   console.log('=====================================================');
-  console.log('       TalentBridge Database Seeder (Safe Mode)      ');
+  console.log('         JobPilot Database Seeder (Safe Mode)        ');
   console.log('=====================================================');
 
   const config = getDatabaseConfig();

@@ -19,7 +19,7 @@ import { JwtStrategy } from '../src/modules/auth/strategies/jwt.strategy';
 import { getModelToken } from '@nestjs/mongoose';
 import { User } from '../src/database/schemas/user.schema';
 
-describe('TalentBridge API Endpoints (Integration E2E Tests)', () => {
+describe('JobPilot API Endpoints (Integration E2E Tests)', () => {
   let app: INestApplication;
   let mockAuthService: any;
   let mockJobsService: any;

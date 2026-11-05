@@ -1,6 +1,6 @@
-# TalentBridge Backend API
+# JobPilot Backend API
 
-Modular NestJS backend for the **TalentBridge** Two-Sided Hiring Platform & Applicant Tracking System (ATS).
+Modular NestJS backend for the **JobPilot** Two-Sided Hiring Platform & Applicant Tracking System (ATS).
 
 ## 🚀 Key Architectural Highlights
 

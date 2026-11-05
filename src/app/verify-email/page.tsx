@@ -30,7 +30,7 @@ export default function VerifyEmailPage() {
             <h2 className="text-2xl font-extrabold text-slate-900">Check Your Email</h2>
             <p className="mt-2 text-sm text-slate-600">
               We&apos;ve sent a verification link to your registered email address. Click the link to
-              activate your TalentBridge account.
+              activate your JobPilot account.
             </p>
           </div>
 

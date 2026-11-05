@@ -1,7 +1,7 @@
 {
   "name": "talentbridge-backend",
   "version": "1.0.0",
-  "description": "TalentBridge Backend API - NestJS modular monolith with MongoDB/Mongoose",
+  "description": "JobPilot Backend API - NestJS modular monolith with MongoDB/Mongoose",
   "private": true,
   "scripts": {
     "build": "nest build",

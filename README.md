@@ -1,4 +1,4 @@
-# TalentBridge — Job Portal & Applicant Tracking System (ATS)
+# JobPilot — Job Portal & Applicant Tracking System (ATS)
 
 A modern, production-grade two-sided hiring platform built with **Next.js App Router**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. It combines a public job board and candidate experience with an end-to-end Applicant Tracking System (ATS) for recruiters and hiring managers.
 

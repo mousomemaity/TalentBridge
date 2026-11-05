@@ -365,7 +365,7 @@ export default function NewJobWizardPage() {
               <div>
                 <h3 className="font-bold text-lg text-slate-900">Ready to Publish Requisition</h3>
                 <p className="text-xs text-slate-500">
-                  Review the requisition summary before publishing live to the TalentBridge job board.
+                  Review the requisition summary before publishing live to the JobPilot job board.
                 </p>
               </div>
             </div>

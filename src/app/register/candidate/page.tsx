@@ -1,26 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/auth-context";
 import {
-  Navigation,
-  CheckCircle2,
-  UploadCloud,
-  FileText,
-  Sparkles,
-  ArrowRight,
   ArrowLeft,
+  ArrowRight,
   Lock,
   Mail,
-  User,
   MapPin,
+  Navigation,
+  Sparkles,
+  UploadCloud,
+  User
 } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 export default function CandidateRegisterPage() {
   const router = useRouter();

@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/auth-context";
+import { Eye, EyeOff, Lock, Mail, Navigation } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { Navigation, Eye, EyeOff, Lock, Mail, Sparkles, CheckCircle2 } from "lucide-react";
+import React, { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -72,22 +72,20 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => handleRoleChange("candidate")}
-              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                role === "candidate"
-                  ? "bg-white text-blue-600 shadow-sm"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
+              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${role === "candidate"
+                ? "bg-white text-blue-600 shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+                }`}
             >
               Job Seeker (Candidate)
             </button>
             <button
               type="button"
               onClick={() => handleRoleChange("employer")}
-              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                role === "employer"
-                  ? "bg-white text-purple-600 shadow-sm"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
+              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${role === "employer"
+                ? "bg-white text-purple-600 shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+                }`}
             >
               Employer / Recruiter
             </button>

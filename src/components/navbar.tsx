@@ -44,12 +44,12 @@ export function Navbar() {
 
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-slate-900 flex items-center">
-                Job<span className="text-blue-600 font-extrabold">Pilot</span>
+              <span className="text-xl font-bold tracking-tight text-[#2160FF] flex items-center">
+                JobPilot
 
               </span>
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-500 -mt-0.5">
-                Job Portal & ATS
+              <span className="text-[9px] uppercase tracking-wider font-semibold text-slate-500 -mt-0.5 whitespace-nowrap">
+                SMART HIRING & CAREER PLATFORM
               </span>
             </div>
           </Link>

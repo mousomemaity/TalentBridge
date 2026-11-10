@@ -2608,8 +2608,8 @@
     }
   },
   "info": {
-    "title": "TalentBridge Core API",
-    "description": "Official TalentBridge API Contract for Job Portal & Applicant Tracking System (ATS). Integrates Candidate Portal, Employer ATS, Shared Database, and AI Adapter.",
+    "title": "JobPilot Core API",
+    "description": "Official JobPilot API Contract for Job Portal & Applicant Tracking System (ATS). Integrates Candidate Portal, Employer ATS, Shared Database, and AI Adapter.",
     "version": "1.0.0",
     "contact": {}
   },
@@ -3401,7 +3401,7 @@
           },
           "fileUrl": {
             "type": "string",
-            "example": "https://storage.talentbridge.io/resumes/file-uuid-1234.pdf"
+            "example": "https://storage.jobpilot.io/resumes/file-uuid-1234.pdf"
           },
           "mimeType": {
             "type": "string",

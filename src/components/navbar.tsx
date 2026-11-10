@@ -3,14 +3,15 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-context";
 import {
-  Briefcase,
   Building2,
   ChevronDown,
   KanbanSquare,
   LayoutDashboard,
   LogOut,
   Menu,
+  Navigation,
   Search,
+
   User,
   X
 } from "lucide-react";
@@ -38,16 +39,17 @@ export function Navbar() {
         {/* Brand */}
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              <Briefcase className="h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-500/25 group-hover:scale-105 group-hover:shadow-indigo-500/35 transition-all duration-200">
+              <Navigation className="h-5 w-5 fill-white text-white translate-x-[-0.5px] translate-y-[0.5px]" />
+
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-black tracking-tight text-slate-900 flex items-center gap-1.5">
-                TalentBridge
-                <span className="inline-block h-2 w-2 rounded-full bg-blue-600"></span>
+              <span className="text-xl font-bold tracking-tight text-[#2160FF] flex items-center">
+                JobPilot
+
               </span>
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-600 -mt-1">
-                Job Portal & ATS
+              <span className="text-[9px] uppercase tracking-wider font-semibold text-slate-500 -mt-0.5 whitespace-nowrap">
+                SMART HIRING & CAREER PLATFORM
               </span>
             </div>
           </Link>
@@ -57,8 +59,8 @@ export function Navbar() {
             <Link
               href="/jobs"
               className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${pathname === "/jobs"
-                  ? "text-blue-600 bg-blue-50 font-semibold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                ? "text-blue-600 bg-blue-50 font-semibold"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
             >
               <Search className="h-4 w-4" />
@@ -67,8 +69,8 @@ export function Navbar() {
             <Link
               href="/companies"
               className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${pathname.startsWith("/companies")
-                  ? "text-blue-600 bg-blue-50 font-semibold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                ? "text-blue-600 bg-blue-50 font-semibold"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
             >
               <Building2 className="h-4 w-4" />

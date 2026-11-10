@@ -37,9 +37,9 @@ async function bootstrap() {
 
   // Swagger / OpenAPI Specification
   const config = new DocumentBuilder()
-    .setTitle('TalentBridge Core API')
+    .setTitle('JobPilot Core API')
     .setDescription(
-      'Official TalentBridge API Contract for Job Portal & Applicant Tracking System (ATS). Integrates Candidate Portal, Employer ATS, Shared Database, and AI Adapter.',
+      'Official JobPilot API Contract for Job Portal & Applicant Tracking System (ATS). Integrates Candidate Portal, Employer ATS, Shared Database, and AI Adapter.',
     )
     .setVersion('1.0.0')
     .addBearerAuth(
@@ -85,7 +85,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3001;
   await app.listen(port);
-  logger.log(`TalentBridge API server running on port ${port} under /api/v1`);
+  logger.log(`JobPilot API server running on port ${port} under /api/v1`);
   logger.log(`Swagger documentation available at http://localhost:${port}/docs`);
 }
 

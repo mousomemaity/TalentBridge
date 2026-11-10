@@ -12,7 +12,7 @@ export class CreateResumeDto {
   @IsNotEmpty()
   fileName: string;
 
-  @ApiProperty({ example: 'https://storage.talentbridge.io/resumes/file-uuid-1234.pdf' })
+  @ApiProperty({ example: 'https://storage.jobpilot.io/resumes/file-uuid-1234.pdf' })
   @IsString()
   @IsNotEmpty()
   fileUrl: string;

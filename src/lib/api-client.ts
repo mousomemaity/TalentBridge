@@ -43,7 +43,7 @@ const inMemoryOffers = [...MOCK_OFFERS];
 
 function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("talentbridge_token");
+  return localStorage.getItem("jobpilot_token") || localStorage.getItem("talentbridge_token");
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {

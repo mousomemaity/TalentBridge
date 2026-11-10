@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
+import { Navigation, ExternalLink, Globe, Share2 } from "lucide-react";
 import Link from "next/link";
-import { Briefcase, Globe, Share2, ExternalLink } from "lucide-react";
 
 export function Footer() {
   return (
@@ -12,10 +11,10 @@ export function Footer() {
           {/* Brand info */}
           <div className="space-y-4 md:col-span-1">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white font-bold">
-                <Briefcase className="h-4 w-4" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-sm">
+                <Navigation className="h-4 w-4 fill-white text-white" />
               </div>
-              <span className="text-lg font-black tracking-tight text-slate-900">TalentBridge</span>
+              <span className="text-lg font-black tracking-tight text-slate-900">JobPilot</span>
             </Link>
             <p className="text-sm text-slate-500 leading-relaxed">
               The next-generation hiring platform combining a public job board for top candidates with a full-featured Applicant Tracking System (ATS) for high-growth teams.
@@ -128,7 +127,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-slate-100 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© 2026 TalentBridge Inc. All rights reserved.</p>
+          <p>© 2026 JobPilot Inc. All rights reserved.</p>
           <p className="flex items-center gap-1">
             Engineered with modern Next.js App Router, TypeScript & Tailwind CSS
           </p>

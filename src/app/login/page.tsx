@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/auth-context";
+import { Eye, EyeOff, Lock, Mail, Navigation } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { Briefcase, Eye, EyeOff, Lock, Mail, Sparkles, CheckCircle2 } from "lucide-react";
+import React, { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -52,13 +52,13 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link href="/" className="inline-flex items-center gap-2 mb-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md">
-            <Briefcase className="h-5 w-5" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-md">
+            <Navigation className="h-5 w-5 fill-white text-white" />
           </div>
-          <span className="text-2xl font-black tracking-tight text-slate-900">TalentBridge</span>
+          <span className="text-2xl font-black tracking-tight text-slate-900">JobPilot</span>
         </Link>
         <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-          Welcome back to TalentBridge
+          Welcome back to JobPilot
         </h2>
         <p className="mt-1 text-xs text-slate-500">
           Sign in to access your jobs, applications, or candidate hiring pipeline
@@ -72,22 +72,20 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => handleRoleChange("candidate")}
-              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                role === "candidate"
-                  ? "bg-white text-blue-600 shadow-sm"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
+              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${role === "candidate"
+                ? "bg-white text-blue-600 shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+                }`}
             >
               Job Seeker (Candidate)
             </button>
             <button
               type="button"
               onClick={() => handleRoleChange("employer")}
-              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                role === "employer"
-                  ? "bg-white text-purple-600 shadow-sm"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
+              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${role === "employer"
+                ? "bg-white text-purple-600 shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+                }`}
             >
               Employer / Recruiter
             </button>

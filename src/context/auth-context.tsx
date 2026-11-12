@@ -35,7 +35,7 @@ const EMPLOYER_USER: User = {
 
 const ADMIN_USER: User = {
   id: "user-admin-1",
-  email: "admin@talentbridge.com",
+  email: "admin@jobpilot.com",
   name: "Sarah Jenkins",
   role: "SA",
   tenantId: "comp-1",
@@ -51,14 +51,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Load authenticated user and role data consistently after hydration
   useEffect(() => {
-    const isLoggedOut = localStorage.getItem("talentbridge_logged_out") === "true";
+    const isLoggedOut =
+      localStorage.getItem("jobpilot_logged_out") === "true" ||
+      localStorage.getItem("talentbridge_logged_out") === "true";
     if (isLoggedOut) {
       setUser(null);
       setToken(null);
       return;
     }
 
-    const savedRole = localStorage.getItem("talentbridge_role") || localStorage.getItem("jobpilot_role");
+    const savedRole =
+      localStorage.getItem("jobpilot_role") ||
+      localStorage.getItem("talentbridge_role");
     if (savedRole === "admin") {
       setUser(ADMIN_USER);
     } else if (savedRole === "employer") {
@@ -67,17 +71,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(CANDIDATE_USER);
     }
 
-    const savedToken = localStorage.getItem("talentbridge_token") || localStorage.getItem("jobpilot_token");
+    const savedToken =
+      localStorage.getItem("jobpilot_token") ||
+      localStorage.getItem("talentbridge_token");
     if (savedToken) {
       setToken(savedToken);
     }
   }, []);
 
   const login = async (role: "candidate" | "employer" | "admin" = "candidate") => {
-    const activeUser = role === "admin" ? ADMIN_USER : role === "employer" ? EMPLOYER_USER : CANDIDATE_USER;
+    const activeUser =
+      role === "admin" ? ADMIN_USER : role === "employer" ? EMPLOYER_USER : CANDIDATE_USER;
     const mockToken = `jwt_${role}_${Date.now()}`;
     setUser(activeUser);
     setToken(mockToken);
+    localStorage.removeItem("jobpilot_logged_out");
     localStorage.removeItem("talentbridge_logged_out");
     localStorage.setItem("jobpilot_token", mockToken);
     localStorage.setItem("jobpilot_role", role);
@@ -88,6 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser(null);
     setToken(null);
+    localStorage.setItem("jobpilot_logged_out", "true");
     localStorage.setItem("talentbridge_logged_out", "true");
     localStorage.removeItem("jobpilot_token");
     localStorage.removeItem("jobpilot_role");

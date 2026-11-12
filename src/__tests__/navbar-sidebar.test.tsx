@@ -25,7 +25,7 @@ describe("Top Navbar Design Requirements", () => {
     mockSearchParams = new URLSearchParams();
   });
 
-  it("renders TalentBridge logo icon without text or subtitle beside it", () => {
+  it("renders JobPilot logo icon without text or subtitle beside it", () => {
     const { container } = render(
       <AuthProvider>
         <Navbar />
@@ -33,7 +33,7 @@ describe("Top Navbar Design Requirements", () => {
     );
 
     // Logo link/icon is present
-    const logoLink = screen.getByLabelText("TalentBridge");
+    const logoLink = screen.getByLabelText(/JobPilot|TalentBridge/);
     expect(logoLink).toBeDefined();
     expect(logoLink.querySelector("svg")).toBeDefined();
 
@@ -106,7 +106,7 @@ describe("Top Navbar Design Requirements", () => {
 
     // Click opens modal
     fireEvent.click(aiBtn);
-    expect(screen.getByText("TalentBridge AI Suite & Integrations")).toBeDefined();
+    expect(screen.getByText(/JobPilot AI Suite & Integrations|TalentBridge AI Suite & Integrations/)).toBeDefined();
     expect(screen.getByText("AI Job Description Generator")).toBeDefined();
   });
 

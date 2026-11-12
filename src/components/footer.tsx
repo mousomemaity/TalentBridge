@@ -12,22 +12,10 @@ export function Footer() {
           <div className="space-y-4 md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-sm">
-                <svg
-                  className="h-4 w-4 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M4 19h16" />
-                  <path d="M4 15c4-6 12-6 16 0" />
-                  <circle cx="12" cy="7" r="2.5" />
-                </svg>
+                <Navigation className="h-4 w-4 fill-white text-white" />
               </div>
               <span className="text-lg font-black tracking-tight text-slate-900">
-                Talent<span className="text-blue-600">Bridge</span>
+                Job<span className="text-blue-600">Pilot</span>
               </span>
             </Link>
             <p className="text-sm text-slate-500 leading-relaxed">
@@ -141,7 +129,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-slate-100 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© 2026 TalentBridge Inc. All rights reserved.</p>
+          <p>© 2026 JobPilot Inc. All rights reserved.</p>
           <p className="flex items-center gap-1">
             Engineered with modern Next.js App Router, TypeScript & Tailwind CSS
           </p>

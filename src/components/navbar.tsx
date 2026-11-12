@@ -154,7 +154,7 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
     <>
       <header className="sticky top-0 z-40 w-full h-16 border-b border-slate-200/90 bg-white/95 backdrop-blur-md">
         <div className="flex h-16 w-full items-center justify-between px-3 sm:px-6 gap-2 sm:gap-4">
-          {/* 1. LEFT SECTION: TalentBridge Logo Icon & Mobile Toggle */}
+          {/* 1. LEFT SECTION: JobPilot Logo Icon & Mobile Toggle */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Mobile hamburger menu toggle */}
             {onToggleSidebar && (
@@ -168,10 +168,10 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
               </button>
             )}
 
-            {/* TalentBridge Logo Icon Only */}
-            <Link href="/" aria-label="TalentBridge" className="flex items-center group">
+            {/* JobPilot Logo Icon Only */}
+            <Link href="/" aria-label="JobPilot" className="flex items-center group">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-all duration-200 shrink-0">
-                {/* Elegant TalentBridge monogram icon: talent node connected over bridge */}
+                {/* Elegant JobPilot icon */}
                 <svg
                   className="h-5 w-5 text-white"
                   viewBox="0 0 24 24"
@@ -493,7 +493,7 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
               </div>
               <div>
                 <DialogTitle className="text-lg font-bold text-slate-900">
-                  TalentBridge AI Suite & Integrations
+                  JobPilot AI Suite & Integrations
                 </DialogTitle>
                 <DialogDescription className="text-xs text-slate-500">
                   Native intelligent automation, matching algorithms, and recruitment accelerators.

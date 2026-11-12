@@ -1,8 +1,9 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
 import {
   LayoutDashboard,
   Briefcase,
@@ -20,17 +21,18 @@ const EMPLOYER_TABS = [
 
 function EmployerSubHeader() {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-3 sm:p-4 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold text-sm shadow-2xs shrink-0">
-            NA
+            {user?.name ? user.name.slice(0, 2).toUpperCase() : "NA"}
           </div>
           <div className="overflow-hidden">
             <h3 className="font-bold text-sm text-slate-900 truncate">
-              NexusAI Technologies
+              {user?.name || "Hiring Team"}
             </h3>
             <p className="text-[11px] text-purple-700 font-semibold flex items-center gap-1">
               <Sparkles className="h-3 w-3" /> Enterprise ATS Plan
@@ -73,6 +75,40 @@ function EmployerSubHeader() {
 }
 
 export default function EmployerLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { user, token, isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!isAuthenticated || !user || !token) {
+      router.replace("/login");
+      return;
+    }
+
+    // Role-based protection: Recruiter / Employer / Hiring Manager / Interviewer / Admin
+    const isEmployerOrAdmin = ["REC", "HM", "INT", "CA", "SA"].includes(user.role);
+    if (!isEmployerOrAdmin) {
+      router.replace("/me/dashboard");
+    }
+  }, [isLoading, isAuthenticated, user, token, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 rounded-full border-2 border-purple-600 border-t-transparent animate-spin" />
+          <p className="text-xs text-slate-500 font-medium">Verifying organization access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const isEmployerOrAdmin = ["REC", "HM", "INT", "CA", "SA"].includes(user?.role || "");
+  if (!isAuthenticated || !user || !token || !isEmployerOrAdmin) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-slate-50/70 py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">

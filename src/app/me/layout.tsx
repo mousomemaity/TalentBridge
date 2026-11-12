@@ -1,8 +1,8 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import {
   LayoutDashboard,
@@ -49,7 +49,7 @@ function CandidateSubHeader() {
           />
           <div className="overflow-hidden">
             <h3 className="font-bold text-sm text-slate-900 truncate">
-              {user?.name || "Alex Rivera"}
+              {user?.name || "Candidate"}
             </h3>
             <p className="text-xs text-slate-500 truncate flex items-center gap-1.5">
               <span>Candidate Career Suite</span>
@@ -93,6 +93,38 @@ function CandidateSubHeader() {
 }
 
 export default function CandidateLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { user, token, isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!isAuthenticated || !user || !token) {
+      router.replace("/login");
+      return;
+    }
+
+    // Role-based protection: Candidate only
+    if (user.role !== "CAN") {
+      router.replace("/app/dashboard");
+    }
+  }, [isLoading, isAuthenticated, user, token, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+          <p className="text-xs text-slate-500 font-medium">Verifying authorization...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user || !token || user.role !== "CAN") {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-slate-50/70 py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">

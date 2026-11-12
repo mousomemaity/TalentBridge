@@ -1,22 +1,22 @@
 "use client";
 
-import React, { Suspense, useEffect } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import {
-  LayoutDashboard,
-  UserCheck,
-  FileText,
-  Briefcase,
-  Bookmark,
-  BellRing,
-  Video,
   Award,
+  BellRing,
+  Bookmark,
+  Briefcase,
+  FileText,
   Gift,
+  LayoutDashboard,
   Settings,
   Sparkles,
+  UserCheck,
+  Video,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import React, { Suspense, useEffect } from "react";
 
 const CANDIDATE_TABS = [
   { href: "/me/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -39,14 +39,9 @@ function CandidateSubHeader() {
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-3 sm:p-4 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div className="flex items-center gap-3">
-          <img
-            src={
-              user?.avatarUrl ||
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80"
-            }
-            alt={user?.name || "Candidate"}
-            className="h-10 w-10 rounded-xl object-cover ring-2 ring-blue-100 shrink-0"
-          />
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm ring-2 ring-blue-100 shrink-0">
+            {user?.name?.trim()?.charAt(0)?.toUpperCase() || "U"}
+          </div>
           <div className="overflow-hidden">
             <h3 className="font-bold text-sm text-slate-900 truncate">
               {user?.name || "Candidate"}
@@ -76,11 +71,10 @@ function CandidateSubHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap transition-all ${
-                isActive
+              className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap transition-all ${isActive
                   ? "bg-blue-50 text-blue-700 border border-blue-200/80"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-              }`}
+                }`}
             >
               <Icon className={`h-3.5 w-3.5 ${isActive ? "text-blue-600" : "text-slate-400"}`} />
               <span>{item.label}</span>

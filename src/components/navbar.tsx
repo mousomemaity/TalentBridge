@@ -1,33 +1,33 @@
 "use client";
 
-import React, { useState, useEffect, useRef, Suspense } from "react";
-import Link from "next/link";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
+import { useAuth } from "@/context/auth-context";
 import { apiClient } from "@/lib/api-client";
 import { formatRelativeTime } from "@/lib/utils";
 import { NotificationItem } from "@/types";
 import {
-  Search,
-  Menu,
-  X,
-  ChevronDown,
-  User,
-  Building2,
-  ShieldCheck,
-  Settings,
-  LogOut,
-  Sparkles,
   Bell,
+  Building2,
+  ChevronDown,
+  LogOut,
+  Menu,
+  Search,
+  Settings,
+  ShieldCheck,
+  Sparkles,
+  User,
+  X,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 
 interface NavbarProps {
   onToggleSidebar?: () => void;
@@ -275,9 +275,8 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
                       {notifications.map((item) => (
                         <div
                           key={item.id}
-                          className={`p-2.5 rounded-xl transition-colors text-left ${
-                            item.readAt ? "bg-white" : "bg-blue-50/50"
-                          }`}
+                          className={`p-2.5 rounded-xl transition-colors text-left ${item.readAt ? "bg-white" : "bg-blue-50/50"
+                            }`}
                         >
                           <div className="flex items-start justify-between gap-2">
                             <p className="text-xs font-semibold text-slate-900">{item.title}</p>
@@ -323,17 +322,9 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
                   aria-haspopup="true"
                 >
                   {/* User Avatar */}
-                  {user.avatarUrl ? (
-                    <img
-                      src={user.avatarUrl}
-                      alt={user.name}
-                      className="h-9 w-9 rounded-full object-cover ring-2 ring-slate-200/80 group-hover:ring-blue-400 transition-all shrink-0"
-                    />
-                  ) : (
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white text-xs font-bold ring-2 ring-slate-200/80 shrink-0">
-                      {user.name.charAt(0)}
-                    </div>
-                  )}
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white text-xs font-bold ring-2 ring-slate-200/80 shrink-0">
+                    {user.name?.charAt(0)?.toUpperCase() || "U"}
+                  </div>
 
                   {/* User Name & Role Pill */}
                   <div className="hidden sm:flex flex-col text-left">
@@ -375,11 +366,10 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
                           switchRole("candidate");
                           setProfileDropdownOpen(false);
                         }}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${
-                          isCandidate && !isAdmin
+                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${isCandidate && !isAdmin
                             ? "bg-blue-50 text-blue-700 font-bold"
                             : "text-slate-700 hover:bg-slate-50 font-medium"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-2">
                           <User className="h-4 w-4" />
@@ -394,11 +384,10 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
                           switchRole("employer");
                           setProfileDropdownOpen(false);
                         }}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${
-                          isEmployer && !isAdmin
+                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${isEmployer && !isAdmin
                             ? "bg-purple-50 text-purple-700 font-bold"
                             : "text-slate-700 hover:bg-slate-50 font-medium"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-2">
                           <Building2 className="h-4 w-4" />
@@ -413,11 +402,10 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
                           switchRole("admin");
                           setProfileDropdownOpen(false);
                         }}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${
-                          isAdmin
+                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${isAdmin
                             ? "bg-indigo-50 text-indigo-700 font-bold"
                             : "text-slate-700 hover:bg-slate-50 font-medium"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-2">
                           <ShieldCheck className="h-4 w-4" />

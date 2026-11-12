@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Lock, CheckCircle2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { CheckCircle2, Lock } from "lucide-react";
+import Link from "next/link";
+import React, { useState } from "react";
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -62,6 +62,7 @@ export default function ResetPasswordPage() {
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                   <Input
                     type="password"
+                    minLength={8}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

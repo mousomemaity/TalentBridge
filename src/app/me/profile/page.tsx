@@ -1,27 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/auth-context";
 import { MOCK_CANDIDATE_PROFILE } from "@/lib/mock-data";
 import {
-  User,
-  MapPin,
-  Mail,
-  Phone,
   Briefcase,
-  GraduationCap,
-  Sparkles,
-  Save,
-  Plus,
-  Trash2,
   CheckCircle2,
+  GraduationCap,
+  Plus,
+  Save,
+  Sparkles,
+  User
 } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 export default function CandidateProfilePage() {
+  const { user } = useAuth();
+
   const [profile, setProfile] = useState(MOCK_CANDIDATE_PROFILE);
+
+  useEffect(() => {
+    if (user) {
+      setProfile((prev) => ({
+        ...prev,
+        fullName: user.name || prev.fullName,
+        email: user.email || prev.email,
+      }));
+    }
+  }, [user]);
   const [isSavedToast, setIsSavedToast] = useState(false);
   const [newSkillName, setNewSkillName] = useState("");
 

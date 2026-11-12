@@ -21,7 +21,7 @@ import React, { useState } from "react";
 
 export default function CandidateRegisterPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { registerCandidate } = useAuth();
 
   const [step, setStep] = useState<1 | 2>(1);
   const [fullName, setFullName] = useState("");
@@ -50,11 +50,38 @@ export default function CandidateRegisterPage() {
     }
   };
 
+
   const handleFinalSubmit = async () => {
     setIsLoading(true);
-    await login("candidate");
-    router.push("/me/dashboard");
+
+    try {
+      const nameParts = fullName.trim().split(/\s+/);
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ");
+
+      if (!lastName) {
+        throw new Error("Please enter your first and last name.");
+      }
+
+      await registerCandidate({
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+
+      router.push("/me/dashboard");
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Registration failed. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

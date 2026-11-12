@@ -11,7 +11,7 @@ import React, { useState } from "react";
 
 export default function EmployerRegisterPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { registerEmployer } = useAuth();
 
   const [companyName, setCompanyName] = useState("");
   const [fullName, setFullName] = useState("");
@@ -21,12 +21,31 @@ export default function EmployerRegisterPage() {
   const [teamSize, setTeamSize] = useState("50-200");
   const [isLoading, setIsLoading] = useState(false);
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    await login("employer");
-    router.push("/app/dashboard");
+
+    try {
+      const nameParts = fullName.trim().split(/\s+/);
+
+      await registerEmployer({
+        firstName: nameParts[0],
+        lastName: nameParts.slice(1).join(" ") || nameParts[0],
+        email: workEmail,
+        password,
+        companyName,
+        domain: website.trim().replace(/^https?:\/\//, "").split("/")[0],
+      });
+
+      router.push("/app/dashboard");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Employer registration failed.");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

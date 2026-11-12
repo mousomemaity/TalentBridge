@@ -1,32 +1,28 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { useAuth } from "@/context/auth-context";
 import {
-  MOCK_CANDIDATE_PROFILE,
-  MOCK_JOBS,
   MOCK_APPLICATIONS,
-  MOCK_INTERVIEWS,
   MOCK_ASSESSMENTS,
+  MOCK_CANDIDATE_PROFILE,
+  MOCK_INTERVIEWS,
+  MOCK_JOBS,
 } from "@/lib/mock-data";
-import { formatCurrency, formatRelativeTime } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import {
-  Sparkles,
   ArrowRight,
-  Briefcase,
-  CheckCircle2,
-  Calendar,
-  Clock,
-  Video,
   Award,
-  ChevronRight,
-  AlertCircle,
+  Clock,
+  Sparkles,
+  Video
 } from "lucide-react";
+import Link from "next/link";
 
 export default function CandidateDashboardPage() {
+  const { user } = useAuth();
   const profile = MOCK_CANDIDATE_PROFILE;
   const applications = MOCK_APPLICATIONS.filter((a) => a.candidateId === "cand-1");
   const upcomingInterview = MOCK_INTERVIEWS[0];
@@ -51,7 +47,7 @@ export default function CandidateDashboardPage() {
               Candidate Workspace
             </Badge>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Welcome back, {profile.fullName.split(" ")[0]}!
+              Welcome back, {user?.name?.split(" ")[0] || "Candidate"}!
             </h1>
             <p className="text-blue-100 text-xs sm:text-sm mt-1 leading-relaxed">
               You have <span className="font-bold text-white">1 upcoming interview</span> and{" "}

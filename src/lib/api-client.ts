@@ -11,6 +11,7 @@ import {
   JobAlert,
   DashboardMetrics,
   KanbanStage,
+  NotificationItem,
 } from "@/types";
 import {
   MOCK_JOBS,
@@ -162,6 +163,14 @@ function mockHandler<T>(endpoint: string, options: RequestInit = {}): Promise<T>
         return resolve(updated as unknown as T);
       }
 
+      // NOTIFICATIONS
+      if (endpoint === "/notifications" && method === "GET") {
+        return resolve([] as unknown as T);
+      }
+      if (endpoint === "/notifications/read" && method === "POST") {
+        return resolve({ success: true } as unknown as T);
+      }
+
       // Default mock resolution
       return resolve({ success: true } as unknown as T);
     }, 150);
@@ -221,5 +230,13 @@ export const apiClient = {
     request<{ success: boolean }>(`/app/applications/${applicationId}/notes`, {
       method: "POST",
       body: JSON.stringify({ content }),
+    }),
+
+  // Notifications
+  getNotifications: () => request<NotificationItem[]>("/notifications"),
+  markNotificationsRead: (ids?: string[]) =>
+    request<{ success: boolean }>("/notifications/read", {
+      method: "POST",
+      body: JSON.stringify({ notificationIds: ids }),
     }),
 };

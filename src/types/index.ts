@@ -233,3 +233,14 @@ export interface DashboardMetrics {
     color: string;
   }[];
 }
+
+export interface NotificationItem {
+  id: string;
+  userId: string;
+  type: string;
+  title: string;
+  message: string;
+  readAt?: string | null;
+  createdAt?: string;
+  data?: Record<string, unknown>;
+}

@@ -308,7 +308,7 @@ function SidebarContent({ isOpen = false, onClose }: SidebarProps) {
             <div className="flex items-center justify-between">
               <span className="font-bold text-slate-900 flex items-center gap-1.5 text-[11px]">
                 <Sparkles className="h-3 w-3 text-blue-600" />
-                TalentBridge ATS
+                JobPilot ATS
               </span>
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" title="System Online" />
             </div>

@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TalentBridge — Smart Hiring Platform & ATS",
+  title: "JobPilot — Smart Hiring Platform & ATS",
   description:
     "A unified hiring platform connecting candidates with high-growth companies with an end-to-end Applicant Tracking System (ATS) and AI-assisted matching.",
   icons: {

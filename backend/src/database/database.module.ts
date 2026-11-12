@@ -1,26 +1,26 @@
 import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from './schemas/user.schema';
-import { Session, SessionSchema } from './schemas/session.schema';
-import { Tenant, TenantSchema } from './schemas/tenant.schema';
-import { TenantMember, TenantMemberSchema } from './schemas/tenant-member.schema';
-import { CandidateProfile, CandidateProfileSchema } from './schemas/candidate-profile.schema';
-import { Resume, ResumeSchema } from './schemas/resume.schema';
-import { Job, JobSchema } from './schemas/job.schema';
-import { JobStage, JobStageSchema } from './schemas/job-stage.schema';
-import { PipelineTemplate, PipelineTemplateSchema } from './schemas/pipeline-template.schema';
-import { TenantCandidate, TenantCandidateSchema } from './schemas/tenant-candidate.schema';
-import { Application, ApplicationSchema } from './schemas/application.schema';
 import { ApplicationStageHistory, ApplicationStageHistorySchema } from './schemas/application-stage-history.schema';
+import { Application, ApplicationSchema } from './schemas/application.schema';
+import { AssessmentAttempt, AssessmentAttemptSchema } from './schemas/assessment-attempt.schema';
+import { Assessment, AssessmentSchema } from './schemas/assessment.schema';
+import { AuditLog, AuditLogSchema } from './schemas/audit-log.schema';
+import { CandidateProfile, CandidateProfileSchema } from './schemas/candidate-profile.schema';
+import { Interview, InterviewSchema } from './schemas/interview.schema';
+import { JobStage, JobStageSchema } from './schemas/job-stage.schema';
+import { Job, JobSchema } from './schemas/job.schema';
+import { MatchScore, MatchScoreSchema } from './schemas/match-score.schema';
+import { Notification, NotificationSchema } from './schemas/notification.schema';
+import { PipelineTemplate, PipelineTemplateSchema } from './schemas/pipeline-template.schema';
+import { Resume, ResumeSchema } from './schemas/resume.schema';
 import { SavedJob, SavedJobSchema } from './schemas/saved-job.schema';
 import { SavedSearch, SavedSearchSchema } from './schemas/saved-search.schema';
-import { Interview, InterviewSchema } from './schemas/interview.schema';
 import { Scorecard, ScorecardSchema } from './schemas/scorecard.schema';
-import { Assessment, AssessmentSchema } from './schemas/assessment.schema';
-import { AssessmentAttempt, AssessmentAttemptSchema } from './schemas/assessment-attempt.schema';
-import { Notification, NotificationSchema } from './schemas/notification.schema';
-import { AuditLog, AuditLogSchema } from './schemas/audit-log.schema';
-import { MatchScore, MatchScoreSchema } from './schemas/match-score.schema';
+import { Session, SessionSchema } from './schemas/session.schema';
+import { TenantCandidate, TenantCandidateSchema } from './schemas/tenant-candidate.schema';
+import { TenantMember, TenantMemberSchema } from './schemas/tenant-member.schema';
+import { Tenant, TenantSchema } from './schemas/tenant.schema';
+import { User, UserSchema } from './schemas/user.schema';
 
 const schemas = [
   { name: User.name, schema: UserSchema },
@@ -60,4 +60,4 @@ const schemas = [
   ],
   exports: [MongooseModule],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

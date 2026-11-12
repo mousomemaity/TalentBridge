@@ -1,102 +1,199 @@
 "use client";
 
-import { User } from "@/types";
+import { User, UserRole } from "@/types";
 import React, { createContext, useContext, useEffect, useState } from "react";
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001/api/v1";
+
+interface BackendLoginResponse {
+  user: {
+    id: string;
+    email: string;
+    role: string;
+    firstName?: string;
+    lastName?: string;
+    tenantId?: string;
+    candidateId?: string;
+    avatarUrl?: string;
+    status?: string;
+  };
+  accessToken: string;
+  refreshToken?: string;
+}
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   isCandidate: boolean;
   isEmployer: boolean;
   isAdmin: boolean;
-  login: (role?: "candidate" | "employer" | "admin") => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
   logout: () => void;
   switchRole: (role: "candidate" | "employer" | "admin") => void;
 }
 
-const CANDIDATE_USER: User = {
-  id: "user-cand-1",
-  email: "alex.rivera@example.com",
-  name: "Alex Rivera",
-  role: "CAN",
-  candidateId: "cand-1",
-  avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80",
-};
-
-const EMPLOYER_USER: User = {
-  id: "user-rec-1",
-  email: "sarah.jenkins@nexusai.com",
-  name: "Sarah Jenkins",
-  role: "REC",
-  tenantId: "comp-1",
-  avatarUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&auto=format&fit=crop&q=80",
-};
-
-const ADMIN_USER: User = {
-  id: "user-admin-1",
-  email: "admin@talentbridge.com",
-  name: "Sarah Jenkins",
-  role: "SA",
-  tenantId: "comp-1",
-  avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80",
-};
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function mapBackendRole(role?: string): UserRole {
+  if (!role) return "CAN";
+  const normalized = role.toUpperCase();
+  const roleMap: Record<string, UserRole> = {
+    CANDIDATE: "CAN",
+    RECRUITER: "REC",
+    HIRING_MANAGER: "HM",
+    INTERVIEWER: "INT",
+    COMPANY_ADMIN: "CA",
+    SUPER_ADMIN: "SA",
+    PUBLIC: "PUB",
+    CAN: "CAN",
+    REC: "REC",
+    HM: "HM",
+    INT: "INT",
+    CA: "CA",
+    SA: "SA",
+    PUB: "PUB",
+  };
+  return roleMap[normalized] || "CAN";
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Default to candidate user for pleasant out-of-the-box experience & deterministic SSR
-  const [user, setUser] = useState<User | null>(CANDIDATE_USER);
-  const [token, setToken] = useState<string | null>("mock_jwt_token_jobpilot");
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load authenticated user and role data consistently after hydration
+  // Restore authenticated session after hydration if available
   useEffect(() => {
-    const isLoggedOut = localStorage.getItem("talentbridge_logged_out") === "true";
-    if (isLoggedOut) {
-      setUser(null);
-      setToken(null);
-      return;
-    }
+    try {
+      const isLoggedOut =
+        localStorage.getItem("jobpilot_logged_out") === "true" ||
+        localStorage.getItem("talentbridge_logged_out") === "true";
 
-    const savedRole = localStorage.getItem("talentbridge_role") || localStorage.getItem("jobpilot_role");
-    if (savedRole === "admin") {
-      setUser(ADMIN_USER);
-    } else if (savedRole === "employer") {
-      setUser(EMPLOYER_USER);
-    } else if (savedRole === "candidate") {
-      setUser(CANDIDATE_USER);
-    }
+      if (isLoggedOut) {
+        setUser(null);
+        setToken(null);
+        setIsLoading(false);
+        return;
+      }
 
-    const savedToken = localStorage.getItem("talentbridge_token") || localStorage.getItem("jobpilot_token");
-    if (savedToken) {
-      setToken(savedToken);
+      const savedToken =
+        localStorage.getItem("jobpilot_token") ||
+        localStorage.getItem("talentbridge_token");
+
+      const savedUser =
+        localStorage.getItem("jobpilot_user") ||
+        localStorage.getItem("talentbridge_user");
+
+      if (savedToken) {
+        setToken(savedToken);
+      }
+
+      if (savedUser) {
+        try {
+          setUser(JSON.parse(savedUser) as User);
+        } catch {
+          localStorage.removeItem("jobpilot_user");
+          localStorage.removeItem("talentbridge_user");
+        }
+      }
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
-  const login = async (role: "candidate" | "employer" | "admin" = "candidate") => {
-    const activeUser = role === "admin" ? ADMIN_USER : role === "employer" ? EMPLOYER_USER : CANDIDATE_USER;
-    const mockToken = `jwt_${role}_${Date.now()}`;
+  const login = async (email: string, password: string): Promise<User> => {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email.trim(),
+        password,
+      }),
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      const message = Array.isArray(result?.message)
+        ? result.message.join(", ")
+        : result?.message || "Invalid email or password. Please try again.";
+      throw new Error(message);
+    }
+
+    const data = result as BackendLoginResponse;
+    if (!data.accessToken || !data.user) {
+      throw new Error("Invalid response received from authentication server.");
+    }
+
+    const mappedRole = mapBackendRole(data.user.role);
+    const fullName = [data.user.firstName, data.user.lastName]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+    const name = fullName || data.user.email.split("@")[0] || "User";
+
+    const activeUser: User = {
+      id: data.user.id,
+      email: data.user.email,
+      name,
+      role: mappedRole,
+      avatarUrl: data.user.avatarUrl || "",
+      tenantId: data.user.tenantId,
+      candidateId: data.user.candidateId,
+    };
+
     setUser(activeUser);
-    setToken(mockToken);
+    setToken(data.accessToken);
+
+    // Clear logged-out flags
+    localStorage.removeItem("jobpilot_logged_out");
     localStorage.removeItem("talentbridge_logged_out");
-    localStorage.setItem("jobpilot_token", mockToken);
-    localStorage.setItem("jobpilot_role", role);
-    localStorage.setItem("talentbridge_token", mockToken);
-    localStorage.setItem("talentbridge_role", role);
+
+    // Save tokens and user data in localStorage
+    localStorage.setItem("jobpilot_token", data.accessToken);
+    localStorage.setItem("talentbridge_token", data.accessToken);
+    localStorage.setItem("jobpilot_user", JSON.stringify(activeUser));
+    localStorage.setItem("talentbridge_user", JSON.stringify(activeUser));
+
+    const roleKey =
+      mappedRole === "CAN" ? "candidate" : mappedRole === "SA" ? "admin" : "employer";
+    localStorage.setItem("jobpilot_role", roleKey);
+    localStorage.setItem("talentbridge_role", roleKey);
+
+    if (data.refreshToken) {
+      localStorage.setItem("jobpilot_refresh_token", data.refreshToken);
+      localStorage.setItem("talentbridge_refresh_token", data.refreshToken);
+    }
+
+    return activeUser;
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
+    localStorage.setItem("jobpilot_logged_out", "true");
     localStorage.setItem("talentbridge_logged_out", "true");
     localStorage.removeItem("jobpilot_token");
     localStorage.removeItem("jobpilot_role");
+    localStorage.removeItem("jobpilot_user");
+    localStorage.removeItem("jobpilot_refresh_token");
     localStorage.removeItem("talentbridge_token");
     localStorage.removeItem("talentbridge_role");
+    localStorage.removeItem("talentbridge_user");
+    localStorage.removeItem("talentbridge_refresh_token");
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
   };
 
   const switchRole = (role: "candidate" | "employer" | "admin") => {
-    login(role);
+    console.warn(
+      `Role switching is disabled for real accounts. Please log in with a ${role} account.`
+    );
   };
 
   const isCandidate = user?.role === "CAN";
@@ -108,7 +205,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         token,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user && !!token,
+        isLoading,
         isCandidate,
         isEmployer,
         isAdmin,

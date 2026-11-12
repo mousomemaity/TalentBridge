@@ -4,29 +4,37 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-context";
-import { Eye, EyeOff, Lock, Mail, Navigation } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, user, isAuthenticated, isLoading: authLoading } = useAuth();
 
   const [role, setRole] = useState<"candidate" | "employer">("candidate");
-  const [email, setEmail] = useState("alex.rivera@example.com");
-  const [password, setPassword] = useState("••••••••••••");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Redirect already authenticated users to their corresponding dashboard
+  useEffect(() => {
+    if (!authLoading && isAuthenticated && user) {
+      if (user.role === "CAN") {
+        router.replace("/me/dashboard");
+      } else if (user.role === "SA") {
+        router.replace("/app/settings?portal=admin");
+      } else {
+        router.replace("/app/dashboard");
+      }
+    }
+  }, [authLoading, isAuthenticated, user, router]);
+
   const handleRoleChange = (newRole: "candidate" | "employer") => {
     setRole(newRole);
-    if (newRole === "candidate") {
-      setEmail("alex.rivera@example.com");
-    } else {
-      setEmail("sarah.jenkins@nexusai.com");
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,11 +43,15 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      await login(role);
-      if (role === "employer") {
-        router.push("/app/dashboard");
-      } else {
+      const loggedInUser = await login(email, password);
+
+      // Redirect users according to their actual backend role, not the selected tab
+      if (loggedInUser.role === "CAN") {
         router.push("/me/dashboard");
+      } else if (loggedInUser.role === "SA") {
+        router.push("/app/settings?portal=admin");
+      } else {
+        router.push("/app/dashboard");
       }
     } catch (err: any) {
       setError(err?.message || "Invalid credentials. Please try again.");
@@ -51,14 +63,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link href="/" className="inline-flex items-center gap-2 mb-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-md">
-            <Navigation className="h-5 w-5 fill-white text-white" />
-          </div>
-          <span className="text-2xl font-black tracking-tight text-slate-900">JobPilot</span>
-        </Link>
         <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-          Welcome back to JobPilot
+          Welcome Back
         </h2>
         <p className="mt-1 text-xs text-slate-500">
           Sign in to access your jobs, applications, or candidate hiring pipeline
@@ -72,20 +78,22 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => handleRoleChange("candidate")}
-              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${role === "candidate"
-                ? "bg-white text-blue-600 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-                }`}
+              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                role === "candidate"
+                  ? "bg-white text-blue-600 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
             >
               Job Seeker (Candidate)
             </button>
             <button
               type="button"
               onClick={() => handleRoleChange("employer")}
-              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${role === "employer"
-                ? "bg-white text-purple-600 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-                }`}
+              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                role === "employer"
+                  ? "bg-white text-purple-600 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
             >
               Employer / Recruiter
             </button>

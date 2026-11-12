@@ -3,32 +3,19 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { getDatabaseConfig } from './config/database.config';
 import { ModelNames } from './config/database.constants';
 import {
-  Application,
   ApplicationSchema,
-  ApplicationStageHistory,
   ApplicationStageHistorySchema,
-  CandidateProfile,
   CandidateProfileSchema,
-  Company,
-  CompanyMember,
   CompanyMemberSchema,
   CompanySchema,
-  Job,
   JobSchema,
-  MatchResult,
   MatchResultSchema,
-  Notification,
   NotificationSchema,
-  PipelineStage,
   PipelineStageSchema,
-  Resume,
   ResumeSchema,
-  SavedJob,
   SavedJobSchema,
-  SavedSearch,
   SavedSearchSchema,
-  User,
-  UserSchema,
+  UserSchema
 } from './schemas';
 
 const FEATURE_MODELS = [

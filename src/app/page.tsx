@@ -36,17 +36,6 @@ const CATEGORIES = [
 
 export default function HomePage() {
   const router = useRouter();
-  const [keyword, setKeyword] = useState("");
-  const [location, setLocation] = useState("");
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-    if (keyword) params.set("query", keyword);
-    if (location) params.set("location", location);
-    router.push(`/jobs?${params.toString()}`);
-  };
-
   const featuredJobs = MOCK_JOBS.slice(0, 4);
 
   return (
@@ -74,62 +63,21 @@ export default function HomePage() {
             matching, and an end-to-end applicant tracking workflow.
           </p>
 
-          {/* Search Box */}
-          <div className="mt-10 max-w-3xl mx-auto">
-            <form
-              onSubmit={handleSearch}
-              className="glass-panel p-2.5 rounded-2xl shadow-xl flex flex-col md:flex-row items-center gap-2.5 border border-slate-200"
-            >
-              <div className="relative flex-1 w-full flex items-center pl-3">
-                <Search className="h-5 w-5 text-slate-400 shrink-0" />
-                <Input
-                  type="text"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  placeholder="Job title, keywords, or skills..."
-                  className="border-0 shadow-none focus-visible:ring-0 text-base py-3 pl-3 pr-2 placeholder:text-slate-400 bg-transparent"
-                />
-              </div>
-
-              <div className="hidden md:block h-8 w-px bg-slate-200"></div>
-
-              <div className="relative flex-1 w-full flex items-center pl-3">
-                <MapPin className="h-5 w-5 text-slate-400 shrink-0" />
-                <Input
-                  type="text"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Location or 'Remote'"
-                  className="border-0 shadow-none focus-visible:ring-0 text-base py-3 pl-3 pr-2 placeholder:text-slate-400 bg-transparent"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full md:w-auto px-8 py-3 rounded-xl shadow-md text-base font-semibold"
+          {/* Quick search tags */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
+            <span className="font-semibold text-slate-700">Popular:</span>
+            {["React", "Next.js", "TypeScript", "Go", "Python", "Remote"].map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => {
+                  router.push(`/jobs?query=${tag}`);
+                }}
+                className="rounded-full bg-white px-3 py-1 font-medium text-slate-600 border border-slate-200 hover:border-blue-400 hover:text-blue-600 transition-all cursor-pointer"
               >
-                Search Jobs
-              </Button>
-            </form>
-
-            {/* Quick search tags */}
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
-              <span className="font-semibold text-slate-700">Popular:</span>
-              {["React", "Next.js", "TypeScript", "Go", "Python", "Remote"].map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => {
-                    setKeyword(tag);
-                    router.push(`/jobs?query=${tag}`);
-                  }}
-                  className="rounded-full bg-white px-3 py-1 font-medium text-slate-600 border border-slate-200 hover:border-blue-400 hover:text-blue-600 transition-all cursor-pointer"
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
+                {tag}
+              </button>
+            ))}
           </div>
 
           {/* Social Proof Stats */}

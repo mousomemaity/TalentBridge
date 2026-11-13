@@ -255,7 +255,7 @@ export default function CandidateRegisterPage() {
 
           <div className="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
             Already registered?{" "}
-            <Link href="/login" className="font-bold text-blue-600 hover:underline">
+            <Link href="/login/candidate" className="font-bold text-blue-600 hover:underline">
               Sign in
             </Link>
           </div>

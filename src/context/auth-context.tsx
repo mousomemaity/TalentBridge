@@ -32,7 +32,11 @@ interface AuthContextType {
   isEmployer: boolean;
   isAdmin: boolean;
 
-  login: (email: string, password: string) => Promise<User>;
+  login: (
+    email: string,
+    password: string,
+    allowedRoles?: UserRole[]
+  ) => Promise<User>;
 
   registerCandidate: (payload: {
     firstName: string;
@@ -124,7 +128,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const login = async (email: string, password: string): Promise<User> => {
+  const login = async (
+    email: string,
+    password: string,
+    allowedRoles?: UserRole[]
+  ): Promise<User> => {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
@@ -151,6 +159,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const mappedRole = mapBackendRole(data.user.role);
+
+    // Enforce role verification for role-specific portals
+    if (allowedRoles && !allowedRoles.includes(mappedRole)) {
+      if (allowedRoles.includes("SA")) {
+        throw new Error(
+          "Access Denied: This portal requires verified Super Admin clearance. Candidates and employers must sign in through their respective portals."
+        );
+      }
+      if (allowedRoles.includes("CAN")) {
+        throw new Error(
+          "Access Denied: This portal is for Job Seekers (Candidates) only. Please sign in through the Employer or Admin Portal."
+        );
+      }
+      if (allowedRoles.includes("REC")) {
+        throw new Error(
+          "Access Denied: This portal is reserved for Recruiters and Hiring Teams. Candidates should sign in via the Candidate Portal."
+        );
+      }
+      throw new Error(
+        "Access Denied: Your account role does not have permission to access this portal."
+      );
+    }
+
     const fullName = [data.user.firstName, data.user.lastName]
       .filter(Boolean)
       .join(" ")
@@ -365,7 +396,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const isCandidate = user?.role === "CAN";
   const isEmployer = ["REC", "HM", "INT", "CA"].includes(user?.role || "");
-  const isAdmin = user?.role === "SA" || user?.role === "CA";
+  const isAdmin = user?.role === "SA";
 
   return (
     <AuthContext.Provider

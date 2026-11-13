@@ -85,7 +85,11 @@ function SidebarContent({ isOpen = false, onClose }: SidebarProps) {
         );
 
       case "admin-portal":
-        return portalParam === "admin";
+        return (
+          portalParam === "admin" ||
+          pathname.startsWith("/admin") ||
+          pathname === "/login/admin"
+        );
 
       case "settings":
         return (
@@ -102,20 +106,19 @@ function SidebarContent({ isOpen = false, onClose }: SidebarProps) {
   };
 
   // Determine targets dynamically based on role
-  const dashboardHref = isEmployer ? "/app/dashboard" : "/me/dashboard";
+  const dashboardHref = isEmployer ? "/app/dashboard" : isAdmin ? "/admin/dashboard" : "/me/dashboard";
   const jobsHref = isEmployer ? "/app/jobs" : "/jobs";
-  const settingsHref = isEmployer ? "/app/settings" : "/me/settings";
+  const settingsHref = isEmployer ? "/app/settings" : isAdmin ? "/admin/dashboard" : "/me/settings";
+
+  // Dedicated role-specific portal targets (opens role login if not authenticated as that role)
+  const candidatePortalHref = user?.role === "CAN" ? "/me/dashboard" : "/login/candidate";
+  const recruiterPortalHref = isEmployer ? "/app/dashboard" : "/login/employer";
+  const adminPortalHref = user?.role === "SA" ? "/admin/dashboard" : "/login/admin";
 
   const handleNavClick = (key: string) => {
     if (onClose) onClose();
 
-    if (key === "candidate-portal") {
-      switchRole("candidate");
-    } else if (key === "recruiter-portal") {
-      switchRole("employer");
-    } else if (key === "admin-portal") {
-      switchRole("admin");
-    } else if (key === "logout") {
+    if (key === "logout") {
       logout();
       router.push("/login");
     }
@@ -153,19 +156,19 @@ function SidebarContent({ isOpen = false, onClose }: SidebarProps) {
       key: "candidate-portal",
       label: "Candidate Portal",
       icon: UserCheck,
-      href: "/me/dashboard?portal=candidate",
+      href: candidatePortalHref,
     },
     {
       key: "recruiter-portal",
       label: "Recruiter Portal",
       icon: Building2,
-      href: "/app/dashboard?portal=recruiter",
+      href: recruiterPortalHref,
     },
     {
       key: "admin-portal",
       label: "Admin Portal",
       icon: ShieldCheck,
-      href: "/app/settings?portal=admin",
+      href: adminPortalHref,
     },
   ];
 

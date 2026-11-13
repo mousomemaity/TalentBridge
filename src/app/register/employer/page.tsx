@@ -181,7 +181,7 @@ export default function EmployerRegisterPage() {
 
           <div className="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
             Already have an employer account?{" "}
-            <Link href="/login" className="font-bold text-purple-600 hover:underline">
+            <Link href="/login/employer" className="font-bold text-purple-600 hover:underline">
               Sign in to ATS
             </Link>
           </div>

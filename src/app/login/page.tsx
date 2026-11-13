@@ -1,180 +1,135 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/context/auth-context";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import React, { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { UserCheck, Building2, ShieldCheck, ArrowRight } from "lucide-react";
+import CandidateLoginPage from "./candidate/page";
+import EmployerLoginPage from "./employer/page";
+import AdminLoginPage from "./admin/page";
 
-export default function LoginPage() {
-  const router = useRouter();
-  const { login, user, isAuthenticated, isLoading: authLoading } = useAuth();
+function LoginContent() {
+  const searchParams = useSearchParams();
+  const portalParam = searchParams.get("portal")?.toLowerCase();
 
-  const [role, setRole] = useState<"candidate" | "employer">("candidate");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  if (portalParam === "admin") {
+    return <AdminLoginPage />;
+  }
 
-  // Redirect already authenticated users to their corresponding dashboard
-  useEffect(() => {
-    if (!authLoading && isAuthenticated && user) {
-      if (user.role === "CAN") {
-        router.replace("/me/dashboard");
-      } else if (user.role === "SA") {
-        router.replace("/app/settings?portal=admin");
-      } else {
-        router.replace("/app/dashboard");
-      }
-    }
-  }, [authLoading, isAuthenticated, user, router]);
+  if (portalParam === "employer" || portalParam === "recruiter") {
+    return <EmployerLoginPage />;
+  }
 
-  const handleRoleChange = (newRole: "candidate" | "employer") => {
-    setRole(newRole);
-  };
+  if (portalParam === "candidate") {
+    return <CandidateLoginPage />;
+  }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
-
-    try {
-      const loggedInUser = await login(email, password);
-
-      // Redirect users according to their actual backend role, not the selected tab
-      if (loggedInUser.role === "CAN") {
-        router.push("/me/dashboard");
-      } else if (loggedInUser.role === "SA") {
-        router.push("/app/settings?portal=admin");
-      } else {
-        router.push("/app/dashboard");
-      }
-    } catch (err: any) {
-      setError(err?.message || "Invalid credentials. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // Gateway view: Allows immediate selection of the three role-specific portals
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-          Welcome Back
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-2xl text-center">
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+          Select Your Portal
         </h2>
-        <p className="mt-1 text-xs text-slate-500">
-          Sign in to access your jobs, applications, or candidate hiring pipeline
+        <p className="mt-2 text-sm text-slate-600 max-w-md mx-auto">
+          JobPilot provides dedicated role-specific authentication portals for candidates, employer hiring teams, and administrators.
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <Card className="border-slate-200/90 shadow-xl p-6 sm:p-8">
-          {/* Persona Tab Switcher */}
-          <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-xl mb-6">
-            <button
-              type="button"
-              onClick={() => handleRoleChange("candidate")}
-              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                role === "candidate"
-                  ? "bg-white text-blue-600 shadow-sm"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              Job Seeker (Candidate)
-            </button>
-            <button
-              type="button"
-              onClick={() => handleRoleChange("employer")}
-              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                role === "employer"
-                  ? "bg-white text-purple-600 shadow-sm"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              Employer / Recruiter
-            </button>
-          </div>
-
-          {error && (
-            <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-medium text-red-700">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* 1. Candidate Portal Card */}
+          <Card className="border-slate-200/90 shadow-lg hover:shadow-xl transition-all duration-200 p-6 flex flex-col justify-between bg-white group hover:border-blue-300">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                Work Email
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                <Input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@company.com"
-                  className="pl-10"
-                />
+              <div className="h-12 w-12 rounded-2xl bg-blue-50 border border-blue-200/80 flex items-center justify-center text-blue-600 shadow-xs mb-4 group-hover:scale-105 transition-transform">
+                <UserCheck className="h-6 w-6" />
               </div>
+              <h3 className="font-bold text-lg text-slate-900">Candidate Portal</h3>
+              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                Explore tech jobs, submit applications, manage resumes, and track AI match scores.
+              </p>
             </div>
+            <div className="mt-6 pt-4 border-t border-slate-100 space-y-2">
+              <Link href="/login/candidate" className="block">
+                <Button className="w-full font-bold bg-blue-600 hover:bg-blue-700 text-white gap-1 text-xs">
+                  Candidate Sign In <ArrowRight className="h-3.5 w-3.5" />
+                </Button>
+              </Link>
+              <Link
+                href="/register/candidate"
+                className="block text-center text-[11px] font-semibold text-blue-600 hover:underline pt-1"
+              >
+                New candidate? Register
+              </Link>
+            </div>
+          </Card>
 
+          {/* 2. Recruiter / Employer Portal Card */}
+          <Card className="border-slate-200/90 shadow-lg hover:shadow-xl transition-all duration-200 p-6 flex flex-col justify-between bg-white group hover:border-purple-300">
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                  Password
-                </label>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs font-semibold text-blue-600 hover:underline"
-                >
-                  Forgot password?
-                </Link>
+              <div className="h-12 w-12 rounded-2xl bg-purple-50 border border-purple-200/80 flex items-center justify-center text-purple-600 shadow-xs mb-4 group-hover:scale-105 transition-transform">
+                <Building2 className="h-6 w-6" />
               </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
+              <h3 className="font-bold text-lg text-slate-900">Employer & ATS</h3>
+              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                Post job openings, manage candidate hiring pipelines, evaluate resumes, and coordinate interviews.
+              </p>
             </div>
+            <div className="mt-6 pt-4 border-t border-slate-100 space-y-2">
+              <Link href="/login/employer" className="block">
+                <Button variant="purple" className="w-full font-bold bg-purple-600 hover:bg-purple-700 text-white gap-1 text-xs">
+                  Recruiter Sign In <ArrowRight className="h-3.5 w-3.5" />
+                </Button>
+              </Link>
+              <Link
+                href="/register/employer"
+                className="block text-center text-[11px] font-semibold text-purple-600 hover:underline pt-1"
+              >
+                New organization? Free trial
+              </Link>
+            </div>
+          </Card>
 
-            <Button
-              type="submit"
-              disabled={isLoading}
-              variant={role === "employer" ? "purple" : "default"}
-              className="w-full font-bold py-2.5 mt-2"
-            >
-              {isLoading ? "Signing in..." : `Sign in as ${role === "employer" ? "Employer" : "Candidate"}`}
-            </Button>
-          </form>
-
-          <div className="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
-            Don&apos;t have an account yet?{" "}
-            <Link
-              href={role === "employer" ? "/register/employer" : "/register/candidate"}
-              className="font-bold text-blue-600 hover:underline"
-            >
-              Register here
-            </Link>
-          </div>
-        </Card>
+          {/* 3. Super Admin Console Card */}
+          <Card className="border-slate-200/90 shadow-lg hover:shadow-xl transition-all duration-200 p-6 flex flex-col justify-between bg-white group hover:border-slate-700">
+            <div>
+              <div className="h-12 w-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-amber-400 shadow-xs mb-4 group-hover:scale-105 transition-transform">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <h3 className="font-bold text-lg text-slate-900">Admin Console</h3>
+              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                Restricted platform administration, tenant isolation management, and security compliance.
+              </p>
+            </div>
+            <div className="mt-6 pt-4 border-t border-slate-100 space-y-2">
+              <Link href="/login/admin" className="block">
+                <Button className="w-full font-bold bg-slate-900 hover:bg-slate-800 text-white gap-1 text-xs">
+                  Super Admin Sign In <ArrowRight className="h-3.5 w-3.5" />
+                </Button>
+              </Link>
+              <p className="text-center text-[11px] text-slate-400 pt-1">
+                Restricted • Root Clearance
+              </p>
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+          <div className="h-8 w-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
   );
 }

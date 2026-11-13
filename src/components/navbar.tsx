@@ -14,13 +14,11 @@ import { formatRelativeTime } from "@/lib/utils";
 import { NotificationItem } from "@/types";
 import {
   Bell,
-  Building2,
   ChevronDown,
   LogOut,
   Menu,
   Search,
   Settings,
-  ShieldCheck,
   Sparkles,
   User,
   X,
@@ -46,7 +44,7 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { user, isAuthenticated, isCandidate, isEmployer, isAdmin, logout, switchRole } = useAuth();
+  const { user, isAuthenticated, isEmployer, isAdmin, logout } = useAuth();
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
@@ -354,72 +352,13 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
                       </div>
                     </div>
 
-                    {/* Switch Persona Demo Section */}
-                    <div className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                      Switch Role Persona
-                    </div>
 
-                    <div className="space-y-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          switchRole("candidate");
-                          setProfileDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${isCandidate && !isAdmin
-                            ? "bg-blue-50 text-blue-700 font-bold"
-                            : "text-slate-700 hover:bg-slate-50 font-medium"
-                          }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          <span>Candidate</span>
-                        </div>
-                        <span className="text-[10px] text-slate-400">Alex R.</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          switchRole("employer");
-                          setProfileDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${isEmployer && !isAdmin
-                            ? "bg-purple-50 text-purple-700 font-bold"
-                            : "text-slate-700 hover:bg-slate-50 font-medium"
-                          }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Building2 className="h-4 w-4" />
-                          <span>Recruiter</span>
-                        </div>
-                        <span className="text-[10px] text-slate-400">Sarah J.</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          switchRole("admin");
-                          setProfileDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors cursor-pointer ${isAdmin
-                            ? "bg-indigo-50 text-indigo-700 font-bold"
-                            : "text-slate-700 hover:bg-slate-50 font-medium"
-                          }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <ShieldCheck className="h-4 w-4" />
-                          <span>Admin</span>
-                        </div>
-                        <span className="text-[10px] text-slate-400">NexusAI SA</span>
-                      </button>
-                    </div>
 
                     <div className="my-1.5 border-t border-slate-100" />
 
                     {/* Navigation Links */}
                     <Link
-                      href={isEmployer ? "/app/settings" : "/me/profile"}
+                      href={isEmployer || isAdmin ? (isAdmin ? "/admin/dashboard" : "/app/settings") : "/me/profile"}
                       onClick={() => setProfileDropdownOpen(false)}
                       className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
                     >
@@ -428,7 +367,7 @@ function NavbarContent({ onToggleSidebar, isSidebarOpen }: NavbarProps) {
                     </Link>
 
                     <Link
-                      href={isEmployer ? "/app/settings" : "/me/settings"}
+                      href={isEmployer || isAdmin ? (isAdmin ? "/admin/dashboard" : "/app/settings") : "/me/settings"}
                       onClick={() => setProfileDropdownOpen(false)}
                       className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
                     >

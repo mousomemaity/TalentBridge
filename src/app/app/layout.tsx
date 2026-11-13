@@ -82,14 +82,20 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
     if (isLoading) return;
 
     if (!isAuthenticated || !user || !token) {
-      router.replace("/login");
+      router.replace("/login/employer");
       return;
     }
 
-    // Role-based protection: Recruiter / Employer / Hiring Manager / Interviewer / Admin
-    const isEmployerOrAdmin = ["REC", "HM", "INT", "CA", "SA"].includes(user.role);
-    if (!isEmployerOrAdmin) {
-      router.replace("/me/dashboard");
+    // Role-based protection: Recruiter / Employer / Hiring Manager / Interviewer / Company Admin ONLY
+    const isEmployerRole = ["REC", "HM", "INT", "CA"].includes(user.role);
+    if (!isEmployerRole) {
+      if (user.role === "CAN") {
+        router.replace("/me/dashboard");
+      } else if (user.role === "SA") {
+        router.replace("/admin/dashboard");
+      } else {
+        router.replace("/login/employer");
+      }
     }
   }, [isLoading, isAuthenticated, user, token, router]);
 
@@ -104,8 +110,8 @@ export default function EmployerLayout({ children }: { children: React.ReactNode
     );
   }
 
-  const isEmployerOrAdmin = ["REC", "HM", "INT", "CA", "SA"].includes(user?.role || "");
-  if (!isAuthenticated || !user || !token || !isEmployerOrAdmin) {
+  const isEmployerRole = ["REC", "HM", "INT", "CA"].includes(user?.role || "");
+  if (!isAuthenticated || !user || !token || !isEmployerRole) {
     return null;
   }
 

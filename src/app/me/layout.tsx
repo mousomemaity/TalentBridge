@@ -94,13 +94,17 @@ export default function CandidateLayout({ children }: { children: React.ReactNod
     if (isLoading) return;
 
     if (!isAuthenticated || !user || !token) {
-      router.replace("/login");
+      router.replace("/login/candidate");
       return;
     }
 
-    // Role-based protection: Candidate only
+    // Role-based protection: Candidate only (never show candidate dashboard to other roles)
     if (user.role !== "CAN") {
-      router.replace("/app/dashboard");
+      if (user.role === "SA") {
+        router.replace("/admin/dashboard");
+      } else {
+        router.replace("/app/dashboard");
+      }
     }
   }, [isLoading, isAuthenticated, user, token, router]);
 

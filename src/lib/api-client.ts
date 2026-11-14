@@ -1,31 +1,31 @@
 import {
-  Job,
-  JobFilterParams,
-  Company,
   Application,
-  CandidateProfile,
-  ResumeItem,
-  InterviewSession,
   AssessmentItem,
-  OfferItem,
-  JobAlert,
+  CandidateProfile,
+  Company,
   DashboardMetrics,
+  InterviewSession,
+  Job,
+  JobAlert,
+  JobFilterParams,
   KanbanStage,
   NotificationItem,
+  OfferItem,
+  ResumeItem,
 } from "@/types";
 import {
-  MOCK_JOBS,
-  MOCK_COMPANIES,
   MOCK_APPLICATIONS,
   MOCK_CANDIDATE_PROFILE,
-  MOCK_RESUMES,
-  MOCK_OFFERS,
-  MOCK_JOB_ALERTS,
+  MOCK_COMPANIES,
   MOCK_DASHBOARD_METRICS,
+  MOCK_JOB_ALERTS,
+  MOCK_JOBS,
+  MOCK_OFFERS,
+  MOCK_RESUMES,
 } from "./mock-data";
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api/v1";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://talentbridge-backend-7r6t.onrender.com/api/v1";
 
 class ApiError extends Error {
   constructor(public status: number, message: string, public data?: unknown) {
